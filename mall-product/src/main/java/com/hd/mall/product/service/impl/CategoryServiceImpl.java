@@ -52,6 +52,8 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
         return level1Menus;
     }
 
+
+
     private List<CategoryEntity> getChildrens(CategoryEntity root, List<CategoryEntity> all) {
         return all.stream()
                 .filter(categoryEntity -> categoryEntity.getParentCid() == root.getCatId())
@@ -64,6 +66,12 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
                 .sorted((menu1, menu2) ->
                         (menu1.getSort() == null ? 0 : menu1.getSort()) - (menu2.getSort() == null ? 0 : menu2.getSort()))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public void removeCategoryByIds(List<Long> asList) {
+        //TODO 1、检查当前菜单是否被引用
+        baseMapper.deleteBatchIds(asList);
     }
 
 }
