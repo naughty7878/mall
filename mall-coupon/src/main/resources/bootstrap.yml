@@ -5,9 +5,9 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: 192.168.1.151:8848
+        server-addr: 192.168.1.152:8848
       config:
-        server-addr: 192.168.1.151:8848
+        server-addr: 192.168.1.152:8848
         # 配置内容文件的数据格式，默认值：properties
         file-extension: yaml
 #        group: SZ_GROUP
