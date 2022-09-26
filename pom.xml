@@ -27,7 +27,7 @@
         <spring-cloud.version>2021.0.3</spring-cloud.version>
         <spring-cloud-alibaba.version>2021.0.1.0</spring-cloud-alibaba.version>
         <mybatis-plus.version>3.5.2</mybatis-plus.version>
-        <mysql-connector.version>8.0.16</mysql-connector.version>
+        <mysql-connector.version>8.0.29</mysql-connector.version>
         <framework.version>1.0-SNAPSHOT</framework.version>
         <hutool.version>5.8.5</hutool.version>
         <lombok.version>1.18.24</lombok.version>
@@ -75,6 +75,13 @@
 <!--                <version>${mybatis-spring-boot.version}</version>-->
 <!--            </dependency>-->
 
+            <!-- mysql -->
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>${mysql-connector.version}</version>
+            </dependency>
+
             <!-- mybatis-plus -->
             <dependency>
                 <groupId>com.baomidou</groupId>
@@ -82,12 +89,7 @@
                 <version>${mybatis-plus.version}</version>
             </dependency>
 
-            <!-- mysql -->
-            <dependency>
-                <groupId>mysql</groupId>
-                <artifactId>mysql-connector-java</artifactId>
-                <version>${mysql-connector.version}</version>
-            </dependency>
+
 
             <!--Hutool Java工具包-->
             <dependency>
