@@ -4,8 +4,8 @@ FROM openjdk:8-jre-alpine
 # 设置工作目录
 WORKDIR /app
 
-# 从构建阶段复制生成的 jar 文件
-COPY --from=builder ./target/*.jar app.jar
+# 复制生成的 jar 文件
+COPY ./target/*.jar app.jar
 
 # 设置 JVM 参数（可根据需要调整）
 ENV JAVA_OPTS="-Xmx512m -Xms256m"
