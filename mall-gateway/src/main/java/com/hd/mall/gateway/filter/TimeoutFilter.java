@@ -16,7 +16,7 @@ import java.time.Duration;
 public class TimeoutFilter implements GlobalFilter, Ordered {
 
     // 设置超时时间为60秒
-    @Value("${route.gateway.expiry:60}") // 缓存过期时间，默认 60 分钟
+    @Value("${route.gateway.expiry:60}") // 过期时间，默认 60 秒
     private long gatewayExpiry;
 
     @Override
