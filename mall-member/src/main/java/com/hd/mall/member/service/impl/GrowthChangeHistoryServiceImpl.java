@@ -1,29 +1,20 @@
 package com.hd.mall.member.service.impl;
 
-import org.springframework.stereotype.Service;
-import java.util.Map;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.hd.mall.member.entity.GrowthChangeHistory;
+import com.hd.mall.member.mapper.GrowthChangeHistoryMapper;
+import com.hd.mall.member.service.IGrowthChangeHistoryService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.hd.mall.common.utils.PageUtils;
-import com.hd.mall.common.utils.Query;
+import org.springframework.stereotype.Service;
 
-import com.hd.mall.member.dao.GrowthChangeHistoryDao;
-import com.hd.mall.member.entity.GrowthChangeHistoryEntity;
-import com.hd.mall.member.service.GrowthChangeHistoryService;
-
-
-@Service("growthChangeHistoryService")
-public class GrowthChangeHistoryServiceImpl extends ServiceImpl<GrowthChangeHistoryDao, GrowthChangeHistoryEntity> implements GrowthChangeHistoryService {
-
-    @Override
-    public PageUtils queryPage(Map<String, Object> params) {
-        IPage<GrowthChangeHistoryEntity> page = this.page(
-                new Query<GrowthChangeHistoryEntity>().getPage(params),
-                new QueryWrapper<GrowthChangeHistoryEntity>()
-        );
-
-        return new PageUtils(page);
-    }
+/**
+ * <p>
+ * 成长值变化历史记录 服务实现类
+ * </p>
+ *
+ * @author H__D
+ * @since 2025-06-05
+ */
+@Service
+public class GrowthChangeHistoryServiceImpl extends ServiceImpl<GrowthChangeHistoryMapper, GrowthChangeHistory> implements IGrowthChangeHistoryService {
 
 }

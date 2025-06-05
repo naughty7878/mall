@@ -10,7 +10,7 @@
     <packaging>pom</packaging>
 
     <modules>
-<!--        <module>mall-admin</module>-->
+        <module>mall-admin</module>
         <module>mall-common</module>
         <module>mall-coupon</module>
         <module>mall-gateway</module>

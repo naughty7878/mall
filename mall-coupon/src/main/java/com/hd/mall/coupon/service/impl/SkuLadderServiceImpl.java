@@ -1,29 +1,20 @@
 package com.hd.mall.coupon.service.impl;
 
-import org.springframework.stereotype.Service;
-import java.util.Map;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.hd.mall.coupon.entity.SkuLadder;
+import com.hd.mall.coupon.mapper.SkuLadderMapper;
+import com.hd.mall.coupon.service.ISkuLadderService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.hd.mall.common.utils.PageUtils;
-import com.hd.mall.common.utils.Query;
+import org.springframework.stereotype.Service;
 
-import com.hd.mall.coupon.dao.SkuLadderDao;
-import com.hd.mall.coupon.entity.SkuLadderEntity;
-import com.hd.mall.coupon.service.SkuLadderService;
-
-
-@Service("skuLadderService")
-public class SkuLadderServiceImpl extends ServiceImpl<SkuLadderDao, SkuLadderEntity> implements SkuLadderService {
-
-    @Override
-    public PageUtils queryPage(Map<String, Object> params) {
-        IPage<SkuLadderEntity> page = this.page(
-                new Query<SkuLadderEntity>().getPage(params),
-                new QueryWrapper<SkuLadderEntity>()
-        );
-
-        return new PageUtils(page);
-    }
+/**
+ * <p>
+ * 商品阶梯价格 服务实现类
+ * </p>
+ *
+ * @author H__D
+ * @since 2025-06-05
+ */
+@Service
+public class SkuLadderServiceImpl extends ServiceImpl<SkuLadderMapper, SkuLadder> implements ISkuLadderService {
 
 }

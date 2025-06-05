@@ -1,29 +1,20 @@
 package com.hd.mall.coupon.service.impl;
 
-import org.springframework.stereotype.Service;
-import java.util.Map;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.hd.mall.coupon.entity.MemberPrice;
+import com.hd.mall.coupon.mapper.MemberPriceMapper;
+import com.hd.mall.coupon.service.IMemberPriceService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.hd.mall.common.utils.PageUtils;
-import com.hd.mall.common.utils.Query;
+import org.springframework.stereotype.Service;
 
-import com.hd.mall.coupon.dao.MemberPriceDao;
-import com.hd.mall.coupon.entity.MemberPriceEntity;
-import com.hd.mall.coupon.service.MemberPriceService;
-
-
-@Service("memberPriceService")
-public class MemberPriceServiceImpl extends ServiceImpl<MemberPriceDao, MemberPriceEntity> implements MemberPriceService {
-
-    @Override
-    public PageUtils queryPage(Map<String, Object> params) {
-        IPage<MemberPriceEntity> page = this.page(
-                new Query<MemberPriceEntity>().getPage(params),
-                new QueryWrapper<MemberPriceEntity>()
-        );
-
-        return new PageUtils(page);
-    }
+/**
+ * <p>
+ * 商品会员价格 服务实现类
+ * </p>
+ *
+ * @author H__D
+ * @since 2025-06-05
+ */
+@Service
+public class MemberPriceServiceImpl extends ServiceImpl<MemberPriceMapper, MemberPrice> implements IMemberPriceService {
 
 }

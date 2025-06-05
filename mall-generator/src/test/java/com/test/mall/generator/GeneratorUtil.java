@@ -10,7 +10,7 @@ import java.util.Collections;
 public class GeneratorUtil {
 
     public static void main(String[] args) {
-        String url = "jdbc:mysql://192.168.1.170:3306/mall_pms?allowPublicKeyRetrieval=true&useSSL=false";
+        String url = "jdbc:mysql://192.168.1.170:3306/mall_sms?allowPublicKeyRetrieval=true&useSSL=false";
         String username = "root";
         String password = "123456";
         String outputDir = "C:\\Users\\H__D\\Desktop";
@@ -24,13 +24,13 @@ public class GeneratorUtil {
                 })
                 .packageConfig(builder -> {
                     builder.parent("com")                   // 设置父包名
-                            .moduleName("hd.mall.product")           // 设置父包模块名
+                            .moduleName("hd.mall.coupon")           // 设置父包模块名
                             .pathInfo(Collections.singletonMap(OutputFile.xml, xmlPath)); // 设置mapperXml生成路径
                 })
                 .strategyConfig(builder -> {
                     builder
 //                            .addInclude("t_employee")        // 设置需要生成的表名
-                            .addTablePrefix("pms_", "c_")  // 设置过滤表前缀
+                            .addTablePrefix("sms_", "c_")  // 设置过滤表前缀
 
                             .entityBuilder()                // 实体策略配置
 //                            .enableColumnConstant()       // 开启生成字段常量    默认值:false， 生成：public static final String LAST_NAME = "last_name";

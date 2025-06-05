@@ -1,29 +1,20 @@
 package com.hd.mall.coupon.service.impl;
 
-import org.springframework.stereotype.Service;
-import java.util.Map;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.hd.mall.coupon.entity.HomeSubject;
+import com.hd.mall.coupon.mapper.HomeSubjectMapper;
+import com.hd.mall.coupon.service.IHomeSubjectService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.hd.mall.common.utils.PageUtils;
-import com.hd.mall.common.utils.Query;
+import org.springframework.stereotype.Service;
 
-import com.hd.mall.coupon.dao.HomeSubjectDao;
-import com.hd.mall.coupon.entity.HomeSubjectEntity;
-import com.hd.mall.coupon.service.HomeSubjectService;
-
-
-@Service("homeSubjectService")
-public class HomeSubjectServiceImpl extends ServiceImpl<HomeSubjectDao, HomeSubjectEntity> implements HomeSubjectService {
-
-    @Override
-    public PageUtils queryPage(Map<String, Object> params) {
-        IPage<HomeSubjectEntity> page = this.page(
-                new Query<HomeSubjectEntity>().getPage(params),
-                new QueryWrapper<HomeSubjectEntity>()
-        );
-
-        return new PageUtils(page);
-    }
+/**
+ * <p>
+ * 首页专题表【jd首页下面很多专题，每个专题链接新的页面，展示专题商品信息】 服务实现类
+ * </p>
+ *
+ * @author H__D
+ * @since 2025-06-05
+ */
+@Service
+public class HomeSubjectServiceImpl extends ServiceImpl<HomeSubjectMapper, HomeSubject> implements IHomeSubjectService {
 
 }

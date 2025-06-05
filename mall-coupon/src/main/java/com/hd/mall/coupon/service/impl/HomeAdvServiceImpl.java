@@ -1,29 +1,20 @@
 package com.hd.mall.coupon.service.impl;
 
-import org.springframework.stereotype.Service;
-import java.util.Map;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.hd.mall.coupon.entity.HomeAdv;
+import com.hd.mall.coupon.mapper.HomeAdvMapper;
+import com.hd.mall.coupon.service.IHomeAdvService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.hd.mall.common.utils.PageUtils;
-import com.hd.mall.common.utils.Query;
+import org.springframework.stereotype.Service;
 
-import com.hd.mall.coupon.dao.HomeAdvDao;
-import com.hd.mall.coupon.entity.HomeAdvEntity;
-import com.hd.mall.coupon.service.HomeAdvService;
-
-
-@Service("homeAdvService")
-public class HomeAdvServiceImpl extends ServiceImpl<HomeAdvDao, HomeAdvEntity> implements HomeAdvService {
-
-    @Override
-    public PageUtils queryPage(Map<String, Object> params) {
-        IPage<HomeAdvEntity> page = this.page(
-                new Query<HomeAdvEntity>().getPage(params),
-                new QueryWrapper<HomeAdvEntity>()
-        );
-
-        return new PageUtils(page);
-    }
+/**
+ * <p>
+ * 首页轮播广告 服务实现类
+ * </p>
+ *
+ * @author H__D
+ * @since 2025-06-05
+ */
+@Service
+public class HomeAdvServiceImpl extends ServiceImpl<HomeAdvMapper, HomeAdv> implements IHomeAdvService {
 
 }

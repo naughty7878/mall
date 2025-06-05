@@ -1,29 +1,20 @@
 package com.hd.mall.member.service.impl;
 
-import org.springframework.stereotype.Service;
-import java.util.Map;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.hd.mall.member.entity.MemberReceiveAddress;
+import com.hd.mall.member.mapper.MemberReceiveAddressMapper;
+import com.hd.mall.member.service.IMemberReceiveAddressService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.hd.mall.common.utils.PageUtils;
-import com.hd.mall.common.utils.Query;
+import org.springframework.stereotype.Service;
 
-import com.hd.mall.member.dao.MemberReceiveAddressDao;
-import com.hd.mall.member.entity.MemberReceiveAddressEntity;
-import com.hd.mall.member.service.MemberReceiveAddressService;
-
-
-@Service("memberReceiveAddressService")
-public class MemberReceiveAddressServiceImpl extends ServiceImpl<MemberReceiveAddressDao, MemberReceiveAddressEntity> implements MemberReceiveAddressService {
-
-    @Override
-    public PageUtils queryPage(Map<String, Object> params) {
-        IPage<MemberReceiveAddressEntity> page = this.page(
-                new Query<MemberReceiveAddressEntity>().getPage(params),
-                new QueryWrapper<MemberReceiveAddressEntity>()
-        );
-
-        return new PageUtils(page);
-    }
+/**
+ * <p>
+ * 会员收货地址 服务实现类
+ * </p>
+ *
+ * @author H__D
+ * @since 2025-06-05
+ */
+@Service
+public class MemberReceiveAddressServiceImpl extends ServiceImpl<MemberReceiveAddressMapper, MemberReceiveAddress> implements IMemberReceiveAddressService {
 
 }

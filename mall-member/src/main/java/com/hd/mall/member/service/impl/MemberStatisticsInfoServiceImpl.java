@@ -1,29 +1,20 @@
 package com.hd.mall.member.service.impl;
 
-import org.springframework.stereotype.Service;
-import java.util.Map;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.hd.mall.member.entity.MemberStatisticsInfo;
+import com.hd.mall.member.mapper.MemberStatisticsInfoMapper;
+import com.hd.mall.member.service.IMemberStatisticsInfoService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.hd.mall.common.utils.PageUtils;
-import com.hd.mall.common.utils.Query;
+import org.springframework.stereotype.Service;
 
-import com.hd.mall.member.dao.MemberStatisticsInfoDao;
-import com.hd.mall.member.entity.MemberStatisticsInfoEntity;
-import com.hd.mall.member.service.MemberStatisticsInfoService;
-
-
-@Service("memberStatisticsInfoService")
-public class MemberStatisticsInfoServiceImpl extends ServiceImpl<MemberStatisticsInfoDao, MemberStatisticsInfoEntity> implements MemberStatisticsInfoService {
-
-    @Override
-    public PageUtils queryPage(Map<String, Object> params) {
-        IPage<MemberStatisticsInfoEntity> page = this.page(
-                new Query<MemberStatisticsInfoEntity>().getPage(params),
-                new QueryWrapper<MemberStatisticsInfoEntity>()
-        );
-
-        return new PageUtils(page);
-    }
+/**
+ * <p>
+ * 会员统计信息 服务实现类
+ * </p>
+ *
+ * @author H__D
+ * @since 2025-06-05
+ */
+@Service
+public class MemberStatisticsInfoServiceImpl extends ServiceImpl<MemberStatisticsInfoMapper, MemberStatisticsInfo> implements IMemberStatisticsInfoService {
 
 }

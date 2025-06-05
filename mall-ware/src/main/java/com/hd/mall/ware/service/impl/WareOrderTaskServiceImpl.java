@@ -1,29 +1,20 @@
 package com.hd.mall.ware.service.impl;
 
-import org.springframework.stereotype.Service;
-import java.util.Map;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.hd.mall.ware.entity.WareOrderTask;
+import com.hd.mall.ware.mapper.WareOrderTaskMapper;
+import com.hd.mall.ware.service.IWareOrderTaskService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.hd.mall.common.utils.PageUtils;
-import com.hd.mall.common.utils.Query;
+import org.springframework.stereotype.Service;
 
-import com.hd.mall.ware.dao.WareOrderTaskDao;
-import com.hd.mall.ware.entity.WareOrderTaskEntity;
-import com.hd.mall.ware.service.WareOrderTaskService;
-
-
-@Service("wareOrderTaskService")
-public class WareOrderTaskServiceImpl extends ServiceImpl<WareOrderTaskDao, WareOrderTaskEntity> implements WareOrderTaskService {
-
-    @Override
-    public PageUtils queryPage(Map<String, Object> params) {
-        IPage<WareOrderTaskEntity> page = this.page(
-                new Query<WareOrderTaskEntity>().getPage(params),
-                new QueryWrapper<WareOrderTaskEntity>()
-        );
-
-        return new PageUtils(page);
-    }
+/**
+ * <p>
+ * 库存工作单 服务实现类
+ * </p>
+ *
+ * @author H__D
+ * @since 2025-06-05
+ */
+@Service
+public class WareOrderTaskServiceImpl extends ServiceImpl<WareOrderTaskMapper, WareOrderTask> implements IWareOrderTaskService {
 
 }

@@ -1,29 +1,20 @@
 package com.hd.mall.ware.service.impl;
 
-import org.springframework.stereotype.Service;
-import java.util.Map;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.hd.mall.ware.entity.WareInfo;
+import com.hd.mall.ware.mapper.WareInfoMapper;
+import com.hd.mall.ware.service.IWareInfoService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.hd.mall.common.utils.PageUtils;
-import com.hd.mall.common.utils.Query;
+import org.springframework.stereotype.Service;
 
-import com.hd.mall.ware.dao.WareInfoDao;
-import com.hd.mall.ware.entity.WareInfoEntity;
-import com.hd.mall.ware.service.WareInfoService;
-
-
-@Service("wareInfoService")
-public class WareInfoServiceImpl extends ServiceImpl<WareInfoDao, WareInfoEntity> implements WareInfoService {
-
-    @Override
-    public PageUtils queryPage(Map<String, Object> params) {
-        IPage<WareInfoEntity> page = this.page(
-                new Query<WareInfoEntity>().getPage(params),
-                new QueryWrapper<WareInfoEntity>()
-        );
-
-        return new PageUtils(page);
-    }
+/**
+ * <p>
+ * 仓库信息 服务实现类
+ * </p>
+ *
+ * @author H__D
+ * @since 2025-06-05
+ */
+@Service
+public class WareInfoServiceImpl extends ServiceImpl<WareInfoMapper, WareInfo> implements IWareInfoService {
 
 }

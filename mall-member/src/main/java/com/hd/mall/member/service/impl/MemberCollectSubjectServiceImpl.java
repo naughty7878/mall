@@ -1,29 +1,20 @@
 package com.hd.mall.member.service.impl;
 
-import org.springframework.stereotype.Service;
-import java.util.Map;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.hd.mall.member.entity.MemberCollectSubject;
+import com.hd.mall.member.mapper.MemberCollectSubjectMapper;
+import com.hd.mall.member.service.IMemberCollectSubjectService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.hd.mall.common.utils.PageUtils;
-import com.hd.mall.common.utils.Query;
+import org.springframework.stereotype.Service;
 
-import com.hd.mall.member.dao.MemberCollectSubjectDao;
-import com.hd.mall.member.entity.MemberCollectSubjectEntity;
-import com.hd.mall.member.service.MemberCollectSubjectService;
-
-
-@Service("memberCollectSubjectService")
-public class MemberCollectSubjectServiceImpl extends ServiceImpl<MemberCollectSubjectDao, MemberCollectSubjectEntity> implements MemberCollectSubjectService {
-
-    @Override
-    public PageUtils queryPage(Map<String, Object> params) {
-        IPage<MemberCollectSubjectEntity> page = this.page(
-                new Query<MemberCollectSubjectEntity>().getPage(params),
-                new QueryWrapper<MemberCollectSubjectEntity>()
-        );
-
-        return new PageUtils(page);
-    }
+/**
+ * <p>
+ * 会员收藏的专题活动 服务实现类
+ * </p>
+ *
+ * @author H__D
+ * @since 2025-06-05
+ */
+@Service
+public class MemberCollectSubjectServiceImpl extends ServiceImpl<MemberCollectSubjectMapper, MemberCollectSubject> implements IMemberCollectSubjectService {
 
 }

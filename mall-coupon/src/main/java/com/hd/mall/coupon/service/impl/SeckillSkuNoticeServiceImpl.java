@@ -1,29 +1,20 @@
 package com.hd.mall.coupon.service.impl;
 
-import org.springframework.stereotype.Service;
-import java.util.Map;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.hd.mall.coupon.entity.SeckillSkuNotice;
+import com.hd.mall.coupon.mapper.SeckillSkuNoticeMapper;
+import com.hd.mall.coupon.service.ISeckillSkuNoticeService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.hd.mall.common.utils.PageUtils;
-import com.hd.mall.common.utils.Query;
+import org.springframework.stereotype.Service;
 
-import com.hd.mall.coupon.dao.SeckillSkuNoticeDao;
-import com.hd.mall.coupon.entity.SeckillSkuNoticeEntity;
-import com.hd.mall.coupon.service.SeckillSkuNoticeService;
-
-
-@Service("seckillSkuNoticeService")
-public class SeckillSkuNoticeServiceImpl extends ServiceImpl<SeckillSkuNoticeDao, SeckillSkuNoticeEntity> implements SeckillSkuNoticeService {
-
-    @Override
-    public PageUtils queryPage(Map<String, Object> params) {
-        IPage<SeckillSkuNoticeEntity> page = this.page(
-                new Query<SeckillSkuNoticeEntity>().getPage(params),
-                new QueryWrapper<SeckillSkuNoticeEntity>()
-        );
-
-        return new PageUtils(page);
-    }
+/**
+ * <p>
+ * 秒杀商品通知订阅 服务实现类
+ * </p>
+ *
+ * @author H__D
+ * @since 2025-06-05
+ */
+@Service
+public class SeckillSkuNoticeServiceImpl extends ServiceImpl<SeckillSkuNoticeMapper, SeckillSkuNotice> implements ISeckillSkuNoticeService {
 
 }

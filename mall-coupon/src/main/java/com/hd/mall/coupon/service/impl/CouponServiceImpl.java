@@ -1,29 +1,20 @@
 package com.hd.mall.coupon.service.impl;
 
-import org.springframework.stereotype.Service;
-import java.util.Map;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.hd.mall.coupon.entity.Coupon;
+import com.hd.mall.coupon.mapper.CouponMapper;
+import com.hd.mall.coupon.service.ICouponService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.hd.mall.common.utils.PageUtils;
-import com.hd.mall.common.utils.Query;
+import org.springframework.stereotype.Service;
 
-import com.hd.mall.coupon.dao.CouponDao;
-import com.hd.mall.coupon.entity.CouponEntity;
-import com.hd.mall.coupon.service.CouponService;
-
-
-@Service("couponService")
-public class CouponServiceImpl extends ServiceImpl<CouponDao, CouponEntity> implements CouponService {
-
-    @Override
-    public PageUtils queryPage(Map<String, Object> params) {
-        IPage<CouponEntity> page = this.page(
-                new Query<CouponEntity>().getPage(params),
-                new QueryWrapper<CouponEntity>()
-        );
-
-        return new PageUtils(page);
-    }
+/**
+ * <p>
+ * 优惠券信息 服务实现类
+ * </p>
+ *
+ * @author H__D
+ * @since 2025-06-05
+ */
+@Service
+public class CouponServiceImpl extends ServiceImpl<CouponMapper, Coupon> implements ICouponService {
 
 }

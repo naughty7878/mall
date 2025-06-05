@@ -1,29 +1,20 @@
 package com.hd.mall.coupon.service.impl;
 
-import org.springframework.stereotype.Service;
-import java.util.Map;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.hd.mall.coupon.entity.SeckillPromotion;
+import com.hd.mall.coupon.mapper.SeckillPromotionMapper;
+import com.hd.mall.coupon.service.ISeckillPromotionService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.hd.mall.common.utils.PageUtils;
-import com.hd.mall.common.utils.Query;
+import org.springframework.stereotype.Service;
 
-import com.hd.mall.coupon.dao.SeckillPromotionDao;
-import com.hd.mall.coupon.entity.SeckillPromotionEntity;
-import com.hd.mall.coupon.service.SeckillPromotionService;
-
-
-@Service("seckillPromotionService")
-public class SeckillPromotionServiceImpl extends ServiceImpl<SeckillPromotionDao, SeckillPromotionEntity> implements SeckillPromotionService {
-
-    @Override
-    public PageUtils queryPage(Map<String, Object> params) {
-        IPage<SeckillPromotionEntity> page = this.page(
-                new Query<SeckillPromotionEntity>().getPage(params),
-                new QueryWrapper<SeckillPromotionEntity>()
-        );
-
-        return new PageUtils(page);
-    }
+/**
+ * <p>
+ * 秒杀活动 服务实现类
+ * </p>
+ *
+ * @author H__D
+ * @since 2025-06-05
+ */
+@Service
+public class SeckillPromotionServiceImpl extends ServiceImpl<SeckillPromotionMapper, SeckillPromotion> implements ISeckillPromotionService {
 
 }

@@ -1,29 +1,20 @@
 package com.hd.mall.coupon.service.impl;
 
-import org.springframework.stereotype.Service;
-import java.util.Map;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.hd.mall.coupon.entity.CouponSpuCategoryRelation;
+import com.hd.mall.coupon.mapper.CouponSpuCategoryRelationMapper;
+import com.hd.mall.coupon.service.ICouponSpuCategoryRelationService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.hd.mall.common.utils.PageUtils;
-import com.hd.mall.common.utils.Query;
+import org.springframework.stereotype.Service;
 
-import com.hd.mall.coupon.dao.CouponSpuCategoryRelationDao;
-import com.hd.mall.coupon.entity.CouponSpuCategoryRelationEntity;
-import com.hd.mall.coupon.service.CouponSpuCategoryRelationService;
-
-
-@Service("couponSpuCategoryRelationService")
-public class CouponSpuCategoryRelationServiceImpl extends ServiceImpl<CouponSpuCategoryRelationDao, CouponSpuCategoryRelationEntity> implements CouponSpuCategoryRelationService {
-
-    @Override
-    public PageUtils queryPage(Map<String, Object> params) {
-        IPage<CouponSpuCategoryRelationEntity> page = this.page(
-                new Query<CouponSpuCategoryRelationEntity>().getPage(params),
-                new QueryWrapper<CouponSpuCategoryRelationEntity>()
-        );
-
-        return new PageUtils(page);
-    }
+/**
+ * <p>
+ * 优惠券分类关联 服务实现类
+ * </p>
+ *
+ * @author H__D
+ * @since 2025-06-05
+ */
+@Service
+public class CouponSpuCategoryRelationServiceImpl extends ServiceImpl<CouponSpuCategoryRelationMapper, CouponSpuCategoryRelation> implements ICouponSpuCategoryRelationService {
 
 }
