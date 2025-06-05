@@ -1,29 +1,20 @@
 package com.hd.mall.product.service.impl;
 
-import org.springframework.stereotype.Service;
-import java.util.Map;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.hd.mall.product.entity.ProductAttrValue;
+import com.hd.mall.product.mapper.ProductAttrValueMapper;
+import com.hd.mall.product.service.IProductAttrValueService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.hd.mall.common.utils.PageUtils;
-import com.hd.mall.common.utils.Query;
+import org.springframework.stereotype.Service;
 
-import com.hd.mall.product.dao.ProductAttrValueDao;
-import com.hd.mall.product.entity.ProductAttrValueEntity;
-import com.hd.mall.product.service.ProductAttrValueService;
-
-
-@Service("productAttrValueService")
-public class ProductAttrValueServiceImpl extends ServiceImpl<ProductAttrValueDao, ProductAttrValueEntity> implements ProductAttrValueService {
-
-    @Override
-    public PageUtils queryPage(Map<String, Object> params) {
-        IPage<ProductAttrValueEntity> page = this.page(
-                new Query<ProductAttrValueEntity>().getPage(params),
-                new QueryWrapper<ProductAttrValueEntity>()
-        );
-
-        return new PageUtils(page);
-    }
+/**
+ * <p>
+ * spu属性值 服务实现类
+ * </p>
+ *
+ * @author H__D
+ * @since 2025-06-05
+ */
+@Service
+public class ProductAttrValueServiceImpl extends ServiceImpl<ProductAttrValueMapper, ProductAttrValue> implements IProductAttrValueService {
 
 }

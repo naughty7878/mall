@@ -1,29 +1,20 @@
 package com.hd.mall.product.service.impl;
 
-import org.springframework.stereotype.Service;
-import java.util.Map;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.hd.mall.product.entity.SkuImages;
+import com.hd.mall.product.mapper.SkuImagesMapper;
+import com.hd.mall.product.service.ISkuImagesService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.hd.mall.common.utils.PageUtils;
-import com.hd.mall.common.utils.Query;
+import org.springframework.stereotype.Service;
 
-import com.hd.mall.product.dao.SkuImagesDao;
-import com.hd.mall.product.entity.SkuImagesEntity;
-import com.hd.mall.product.service.SkuImagesService;
-
-
-@Service("skuImagesService")
-public class SkuImagesServiceImpl extends ServiceImpl<SkuImagesDao, SkuImagesEntity> implements SkuImagesService {
-
-    @Override
-    public PageUtils queryPage(Map<String, Object> params) {
-        IPage<SkuImagesEntity> page = this.page(
-                new Query<SkuImagesEntity>().getPage(params),
-                new QueryWrapper<SkuImagesEntity>()
-        );
-
-        return new PageUtils(page);
-    }
+/**
+ * <p>
+ * sku图片 服务实现类
+ * </p>
+ *
+ * @author H__D
+ * @since 2025-06-05
+ */
+@Service
+public class SkuImagesServiceImpl extends ServiceImpl<SkuImagesMapper, SkuImages> implements ISkuImagesService {
 
 }

@@ -1,5 +1,6 @@
 package com.hd.mall.gateway.filter;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
@@ -12,15 +13,17 @@ import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 
+@Slf4j
 @Component
 public class TimeoutFilter implements GlobalFilter, Ordered {
 
     // 设置超时时间为60秒
-    @Value("${route.gateway.expiry:60}") // 过期时间，默认 60 秒
+    @Value("${gateway.expiry:60}") // 过期时间，默认 60 秒
     private long gatewayExpiry;
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
+//        log.info("==========TimeoutFilter==========");
         return chain.filter(exchange)
                 .timeout(Duration.ofSeconds(gatewayExpiry))
                 .onErrorResume(throwable -> {

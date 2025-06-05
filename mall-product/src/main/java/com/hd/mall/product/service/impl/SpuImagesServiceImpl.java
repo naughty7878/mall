@@ -1,29 +1,20 @@
 package com.hd.mall.product.service.impl;
 
-import org.springframework.stereotype.Service;
-import java.util.Map;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.hd.mall.product.entity.SpuImages;
+import com.hd.mall.product.mapper.SpuImagesMapper;
+import com.hd.mall.product.service.ISpuImagesService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.hd.mall.common.utils.PageUtils;
-import com.hd.mall.common.utils.Query;
+import org.springframework.stereotype.Service;
 
-import com.hd.mall.product.dao.SpuImagesDao;
-import com.hd.mall.product.entity.SpuImagesEntity;
-import com.hd.mall.product.service.SpuImagesService;
-
-
-@Service("spuImagesService")
-public class SpuImagesServiceImpl extends ServiceImpl<SpuImagesDao, SpuImagesEntity> implements SpuImagesService {
-
-    @Override
-    public PageUtils queryPage(Map<String, Object> params) {
-        IPage<SpuImagesEntity> page = this.page(
-                new Query<SpuImagesEntity>().getPage(params),
-                new QueryWrapper<SpuImagesEntity>()
-        );
-
-        return new PageUtils(page);
-    }
+/**
+ * <p>
+ * spu图片 服务实现类
+ * </p>
+ *
+ * @author H__D
+ * @since 2025-06-05
+ */
+@Service
+public class SpuImagesServiceImpl extends ServiceImpl<SpuImagesMapper, SpuImages> implements ISpuImagesService {
 
 }

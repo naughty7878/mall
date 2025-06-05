@@ -1,29 +1,20 @@
 package com.hd.mall.product.service.impl;
 
-import org.springframework.stereotype.Service;
-import java.util.Map;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.hd.mall.product.entity.SpuComment;
+import com.hd.mall.product.mapper.SpuCommentMapper;
+import com.hd.mall.product.service.ISpuCommentService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.hd.mall.common.utils.PageUtils;
-import com.hd.mall.common.utils.Query;
+import org.springframework.stereotype.Service;
 
-import com.hd.mall.product.dao.SpuCommentDao;
-import com.hd.mall.product.entity.SpuCommentEntity;
-import com.hd.mall.product.service.SpuCommentService;
-
-
-@Service("spuCommentService")
-public class SpuCommentServiceImpl extends ServiceImpl<SpuCommentDao, SpuCommentEntity> implements SpuCommentService {
-
-    @Override
-    public PageUtils queryPage(Map<String, Object> params) {
-        IPage<SpuCommentEntity> page = this.page(
-                new Query<SpuCommentEntity>().getPage(params),
-                new QueryWrapper<SpuCommentEntity>()
-        );
-
-        return new PageUtils(page);
-    }
+/**
+ * <p>
+ * 商品评价 服务实现类
+ * </p>
+ *
+ * @author H__D
+ * @since 2025-06-05
+ */
+@Service
+public class SpuCommentServiceImpl extends ServiceImpl<SpuCommentMapper, SpuComment> implements ISpuCommentService {
 
 }
