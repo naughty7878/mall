@@ -1,6 +1,7 @@
 package com.hd.mall.common.exception;
 
-import com.macro.mall.common.api.IErrorCode;
+
+import com.hd.mall.common.api.IErrorCode;
 
 /**
  * 自定义API异常

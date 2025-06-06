@@ -11,8 +11,8 @@ import org.springframework.stereotype.Controller;
  * @author H__D
  * @since 2025-06-05
  */
-@Controller
-@RequestMapping("/hd.mall.member/memberReceiveAddress")
+@RestController
+@RequestMapping("/member/memberReceiveAddress")
 public class MemberReceiveAddressController {
 
 }

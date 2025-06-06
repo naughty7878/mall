@@ -1,7 +1,10 @@
 package com.hd.mall.member.controller;
 
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.filter.CommonsRequestLoggingFilter;
 
 /**
  * <p>
@@ -11,8 +14,10 @@ import org.springframework.stereotype.Controller;
  * @author H__D
  * @since 2025-06-05
  */
-@Controller
-@RequestMapping("/hd.mall.member/member")
+@RestController
 public class MemberController {
+
+    @PostMapping("/member/member/coupons")
+    public Common
 
 }

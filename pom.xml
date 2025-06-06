@@ -12,7 +12,6 @@
     <modules>
         <module>mall-admin</module>
         <module>mall-common</module>
-        <module>mall-coupon</module>
         <module>mall-gateway</module>
         <module>mall-generator</module>
         <module>mall-member</module>
@@ -132,6 +131,12 @@
             <dependency>
                 <groupId>com.hd.mall</groupId>
                 <artifactId>mall-common</artifactId>
+                <version>${framework.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.hd.mall</groupId>
+                <artifactId>mall-coupon-client</artifactId>
                 <version>${framework.version}</version>
             </dependency>
         </dependencies>

@@ -1,4 +1,4 @@
-package com.hd.mall.common.utils;
+package com.hd.mall.common.util;
 
 
 import java.io.Serializable;
