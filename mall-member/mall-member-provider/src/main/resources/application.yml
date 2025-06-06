@@ -1,11 +1,12 @@
-# 端口
+ # 端口
 server:
-  port: 7000
+  port: 8000
+
 
 spring:
   application:
     name:
-      mall-coupon
+      mall-member
   config:
     import:
       - optional:nacos:${spring.application.name}
@@ -23,7 +24,7 @@ spring:
   datasource:
     #MySQL配置
     driverClassName: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://192.168.1.170:3306/mall_sms?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://192.168.1.170:3306/mall_ums?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai
     username: root
     password: 123456
 

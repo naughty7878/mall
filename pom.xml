@@ -14,7 +14,6 @@
         <module>mall-common</module>
         <module>mall-gateway</module>
         <module>mall-generator</module>
-        <module>mall-member</module>
         <module>mall-order</module>
         <module>mall-product</module>
         <module>mall-ware</module>

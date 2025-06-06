@@ -5,11 +5,11 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.hd.mall</groupId>
-        <artifactId>mall-coupon</artifactId>
+        <artifactId>mall-member</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>mall-coupon-client</artifactId>
+    <artifactId>mall-member-client</artifactId>
 
     <dependencies>
 
@@ -27,7 +27,7 @@
 
         <dependency>
             <groupId>com.hd.mall</groupId>
-            <artifactId>mall-coupon-api</artifactId>
+            <artifactId>mall-member-api</artifactId>
         </dependency>
 
     </dependencies>
