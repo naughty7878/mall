@@ -10,7 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.util.List;
 
 @SpringBootTest
-public class TestApplication {
+public class TestProductApplication {
 
     @Autowired
     IBrandService brandService;
