@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hd.mall.admin.mapper.ApiExtMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.hd.mall.admin.entity.ApiExt">
+        <id column="id" property="id" />
+        <result column="api_id" property="apiId" />
+        <result column="convert_enabled" property="convertEnabled" />
+        <result column="convert_content" property="convertContent" />
+        <result column="cache_enabled" property="cacheEnabled" />
+        <result column="cache_ttl" property="cacheTtl" />
+        <result column="param_schema" property="paramSchema" />
+        <result column="response_schema" property="responseSchema" />
+        <result column="custom_data" property="customData" />
+        <result column="deleted_flag" property="deletedFlag" />
+        <result column="create_time" property="createTime" />
+        <result column="create_by" property="createBy" />
+        <result column="update_time" property="updateTime" />
+        <result column="update_by" property="updateBy" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, api_id, convert_enabled, convert_content, cache_enabled, cache_ttl, param_schema, response_schema, custom_data, deleted_flag, create_time, create_by, update_time, update_by
+    </sql>
+
+</mapper>

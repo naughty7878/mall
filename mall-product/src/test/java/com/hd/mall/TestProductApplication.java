@@ -1,4 +1,4 @@
-package com.hd.mall.product;
+package com.hd.mall;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.hd.mall.product.entity.Brand;

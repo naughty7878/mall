@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @since 2025-06-05
  */
 @RestController
-@RequestMapping("/ware/wareOrderTask")
+@RequestMapping("/wareOrderTask")
 public class WareOrderTaskController {
 
 }

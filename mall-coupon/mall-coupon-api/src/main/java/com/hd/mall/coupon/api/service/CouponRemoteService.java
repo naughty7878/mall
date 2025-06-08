@@ -13,7 +13,7 @@ import java.util.List;
 public interface CouponRemoteService {
 
     // 获取员工优惠卷列表
-    @PostMapping("/coupon/coupon/member/list")
+    @PostMapping("/list")
     CommonResult<List<CouponDto>> memberCoupons();
 
 }

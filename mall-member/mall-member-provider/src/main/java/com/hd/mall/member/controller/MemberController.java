@@ -23,7 +23,7 @@ public class MemberController {
     @Autowired
     private CouponFeignClient couponFeignClient;
 
-    @PostMapping("/member/member/coupons")
+    @PostMapping("/member/coupons")
     public CommonResult<List<CouponDto>> memberCoupons() {
         return couponFeignClient.memberCoupons();
     }
