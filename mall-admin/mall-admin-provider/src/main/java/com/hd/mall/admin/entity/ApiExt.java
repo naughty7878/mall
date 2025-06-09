@@ -82,10 +82,10 @@ public class ApiExt implements Serializable {
     private LocalDateTime createTime;
 
     /**
-     * 创建人
+     * 创建者
      */
     @TableField(fill = FieldFill.INSERT)
-    private String createBy;
+    private Long createBy;
 
     /**
      * 更新时间
@@ -94,8 +94,8 @@ public class ApiExt implements Serializable {
     private LocalDateTime updateTime;
 
     /**
-     * 更新人
+     * 更新者
      */
     @TableField(fill = FieldFill.INSERT_UPDATE)
-    private String updateBy;
+    private Long updateBy;
 }

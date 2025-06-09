@@ -1,6 +1,6 @@
 package com.hd.mall.member.controller;
 
-import com.hd.mall.common.api.CommonResult;
+import com.hd.mall.common.api.ApiResponse;
 import com.hd.mall.coupon.api.dto.CouponDto;
 import com.hd.mall.coupon.client.CouponFeignClient;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,7 @@ public class MemberController {
     private CouponFeignClient couponFeignClient;
 
     @PostMapping("/member/coupons")
-    public CommonResult<List<CouponDto>> memberCoupons() {
+    public ApiResponse<List<CouponDto>> memberCoupons() {
         return couponFeignClient.memberCoupons();
     }
 

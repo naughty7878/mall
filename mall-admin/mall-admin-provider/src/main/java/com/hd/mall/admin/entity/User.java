@@ -41,6 +41,11 @@ public class User implements Serializable {
     private String password;
 
     /**
+     * 用户类型(0:个人,1:服务,2第三方系统)
+     */
+    private Integer type;
+
+    /**
      * 邮箱
      */
     private String email;
@@ -72,10 +77,10 @@ public class User implements Serializable {
     private LocalDateTime createTime;
 
     /**
-     * 创建人
+     * 创建者
      */
     @TableField(fill = FieldFill.INSERT)
-    private String createBy;
+    private Long createBy;
 
     /**
      * 更新时间
@@ -84,8 +89,8 @@ public class User implements Serializable {
     private LocalDateTime updateTime;
 
     /**
-     * 更新人
+     * 更新者
      */
     @TableField(fill = FieldFill.INSERT_UPDATE)
-    private String updateBy;
+    private Long updateBy;
 }

@@ -9,6 +9,7 @@
         <result column="server_id" property="serverId" />
         <result column="name" property="name" />
         <result column="url" property="url" />
+        <result column="log_enabled" property="logEnabled" />
         <result column="auth_type" property="authType" />
         <result column="remark" property="remark" />
         <result column="deleted_flag" property="deletedFlag" />
@@ -20,7 +21,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, code, server_id, name, url, auth_type, remark, deleted_flag, create_time, create_by, update_time, update_by
+        id, code, server_id, name, url, log_enabled, auth_type, remark, deleted_flag, create_time, create_by, update_time, update_by
     </sql>
 
 </mapper>

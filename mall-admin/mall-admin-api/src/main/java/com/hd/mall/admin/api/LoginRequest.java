@@ -1,4 +1,4 @@
-package com.hd.mall.admin.dto;
+package com.hd.mall.admin.api;
 
 import lombok.Data;
 

@@ -1,6 +1,6 @@
 package com.hd.mall.common.exception;
 
-import com.hd.mall.common.api.CommonResult;
+import com.hd.mall.common.api.ApiResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.BindException;
@@ -27,12 +27,12 @@ public class GlobalExceptionHandler {
      * 处理业务自定义异常
      */
     @ExceptionHandler(ApiException.class)
-    public CommonResult<Void> handleApiException(ApiException e, HttpServletRequest request) {
+    public ApiResponse<Void> handleApiException(ApiException e, HttpServletRequest request) {
         log.error("API异常 [url: {}]: errorCode={}, message={}",
                 request.getRequestURL(), e.getErrorCode(), e.getMessage(), e);
         return e.getErrorCode() != null ?
-                CommonResult.failed(e.getErrorCode()) :
-                CommonResult.failed(e.getMessage());
+                ApiResponse.failed(e.getErrorCode()) :
+                ApiResponse.failed(e.getMessage());
     }
 
     /**
@@ -42,7 +42,7 @@ public class GlobalExceptionHandler {
      * 2. @ModelAttribute + @Valid 触发的 BindException
      */
     @ExceptionHandler({MethodArgumentNotValidException.class, BindException.class})
-    public CommonResult<Void> handleValidationException(Exception ex) {
+    public ApiResponse<Void> handleValidationException(Exception ex) {
         BindingResult bindingResult = ex instanceof MethodArgumentNotValidException ?
                 ((MethodArgumentNotValidException) ex).getBindingResult() :
                 ((BindException) ex).getBindingResult();
@@ -57,15 +57,15 @@ public class GlobalExceptionHandler {
                 .collect(Collectors.joining(" | "));
 
         log.warn("参数校验失败: {}", errorMessage);
-        return CommonResult.validateFailed(errorMessage);
+        return ApiResponse.validateFailed(errorMessage);
     }
 
     /**
      * 兜底异常处理
      */
     @ExceptionHandler(Exception.class)
-    public CommonResult<Void> handleGlobalException(Exception e, HttpServletRequest request) {
+    public ApiResponse<Void> handleGlobalException(Exception e, HttpServletRequest request) {
         log.error("全局异常 [url: {}]: ", request.getRequestURL(), e);
-        return CommonResult.failed("系统繁忙，请稍后重试");
+        return ApiResponse.failed("系统繁忙，请稍后重试");
     }
 }

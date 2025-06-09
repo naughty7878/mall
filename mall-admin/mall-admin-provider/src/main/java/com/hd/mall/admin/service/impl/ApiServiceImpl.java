@@ -1,7 +1,9 @@
 package com.hd.mall.admin.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hd.mall.admin.entity.Api;
+import com.hd.mall.admin.enums.status.DeletedStatus;
 import com.hd.mall.admin.mapper.ApiMapper;
 import com.hd.mall.admin.service.IApiService;
 import org.springframework.stereotype.Service;
@@ -17,4 +19,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class ApiServiceImpl extends ServiceImpl<ApiMapper, Api> implements IApiService {
 
+    @Override
+    public Api getRouteApi(Long id) {
+        LambdaQueryWrapper<Api> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(Api::getId, id)
+                .eq(Api::getDeletedFlag, DeletedStatus.NOT_DELETED)
+                .last("LIMIT 1");
+        return baseMapper.selectOne(queryWrapper);
+    }
 }

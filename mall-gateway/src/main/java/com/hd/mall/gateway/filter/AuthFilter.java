@@ -1,6 +1,6 @@
 package com.hd.mall.gateway.filter;
 
-import com.hd.mall.gateway.api.CommonResult;
+import com.hd.mall.gateway.api.ApiResponse;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
@@ -42,7 +42,7 @@ public class AuthFilter implements GlobalFilter, Ordered {
                 .uri("/auth/verify")
                 .header("Authorization", token)
                 .retrieve()
-                .bodyToMono(CommonResult.class)
+                .bodyToMono(ApiResponse.class)
                 .flatMap(response -> {
                     if (response.getCode() == 0) {
                         ServerHttpRequest request = exchange.getRequest().mutate()

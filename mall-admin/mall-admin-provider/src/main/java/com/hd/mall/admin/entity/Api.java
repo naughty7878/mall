@@ -51,6 +51,11 @@ public class Api implements Serializable {
     private String url;
 
     /**
+     * 是否记录日志(0:否,1:是)
+     */
+    private Integer logEnabled;
+
+    /**
      * 接口鉴权类型(0:需登录鉴权,1:需登录免鉴权,2:开放免登录免鉴权)
      */
     private Integer authType;
@@ -72,10 +77,10 @@ public class Api implements Serializable {
     private LocalDateTime createTime;
 
     /**
-     * 创建人
+     * 创建者
      */
     @TableField(fill = FieldFill.INSERT)
-    private String createBy;
+    private Long createBy;
 
     /**
      * 更新时间
@@ -84,8 +89,8 @@ public class Api implements Serializable {
     private LocalDateTime updateTime;
 
     /**
-     * 更新人
+     * 更新者
      */
     @TableField(fill = FieldFill.INSERT_UPDATE)
-    private String updateBy;
+    private Long updateBy;
 }

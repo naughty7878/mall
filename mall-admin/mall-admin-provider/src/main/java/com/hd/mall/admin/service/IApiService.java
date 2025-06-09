@@ -13,4 +13,6 @@ import com.hd.mall.admin.entity.Api;
  */
 public interface IApiService extends IService<Api> {
 
+    // 根据ID-查询API
+    Api getRouteApi(Long id);
 }
