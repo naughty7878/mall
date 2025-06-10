@@ -10,7 +10,7 @@ import reactor.core.publisher.Flux;
 
 @Slf4j
 @Component
-public class DynamicRouteDefinitionLocator implements RouteDefinitionLocator {
+public class DynamicLocator implements RouteDefinitionLocator {
 
     @Autowired
     private DynamicRouteService dynamicRouteService;
