@@ -83,11 +83,11 @@ public class DynamicRouteService {
         definition.setUri(URI.create("http://localhost:6000"));
 
         // 设置路径断言
-        PredicateDefinition predicate = new PredicateDefinition();
-        predicate.setName("Path");
-        predicate.addArg(NameUtils.generateName(0), "/route/api");
-//        predicate.addArg(NameUtils.generateName(0), "/" + serverDto.getCode() + "/api"); // 根据服务配置不同路径
-        definition.getPredicates().add(predicate);
+//        PredicateDefinition predicate = new PredicateDefinition();
+//        predicate.setName("Path");
+//        predicate.addArg(NameUtils.generateName(0), "/route/api");
+////        predicate.addArg(NameUtils.generateName(0), "/" + serverDto.getCode() + "/api"); // 根据服务配置不同路径
+//        definition.getPredicates().add(predicate);
 
         // 设置请求头断言 - 确保 api 头不能为空
         PredicateDefinition xApiHeaderPredicate = new PredicateDefinition();
