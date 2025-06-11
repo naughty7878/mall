@@ -42,7 +42,6 @@ public class DynamicRouteService {
 
     /**
      * 从外部 API 获取路由规则（带缓存）
-     *
      * 由于Nacos心跳机制触发路由刷新，会调用次此方法，增加缓存机制
      */
     public Flux<ServerDto> fetchRoutesFromExternalApi() {
