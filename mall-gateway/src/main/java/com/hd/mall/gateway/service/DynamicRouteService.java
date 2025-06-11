@@ -17,6 +17,7 @@ import org.springframework.web.reactive.function.client.WebClientResponseExcepti
 import reactor.core.publisher.Flux;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -33,42 +34,72 @@ public class DynamicRouteService {
     private String serverApiUrl;
 
     /**
-     * 从外部 API 获取路由规则
+     * 缓存的路由数据
+     */
+    private List<ServerDto> cachedRoutes = new ArrayList<>();
+    private long lastFetchTime = 0;
+    private static final long CACHE_TTL = 10 * 60 * 1000; // 缓存有效期（毫秒）
+
+    /**
+     * 从外部 API 获取路由规则（带缓存）
+     *
+     * 由于Nacos心跳机制触发路由刷新，会调用次此方法，增加缓存机制
      */
     public Flux<ServerDto> fetchRoutesFromExternalApi() {
+        long currentTime = System.currentTimeMillis();
+
+        // 如果缓存有效且未过期，直接返回缓存数据
+        if (!cachedRoutes.isEmpty() && (currentTime - lastFetchTime < CACHE_TTL)) {
+            log.info("使用缓存路由配置数据，缓存条数: {}", cachedRoutes.size());
+            return Flux.fromIterable(cachedRoutes);
+        }
+
+        // 发起 HTTP 请求
         return webClient.post()
                 .uri(serverApiUrl)
                 .retrieve()
-                .bodyToMono(new ParameterizedTypeReference<ApiResponse<List<ServerDto>>>() {})
+                .bodyToMono(new ParameterizedTypeReference<ApiResponse<List<ServerDto>>>() {
+                })
                 .flatMapMany(response -> {
                     // 状态码检查
                     if (response.getCode() != 0) {
                         log.error("路由配置请求失败 - 状态码: {}, 消息: {}",
                                 response.getCode(), response.getMessage());
-                        return Flux.empty();
-                    }
 
+                        // 返回缓存数据
+                        log.info("使用缓存数据，缓存条数: {}", cachedRoutes.size());
+                        return Flux.fromIterable(cachedRoutes);
+                    }
                     // 空数据检查
                     if (response.getData() == null || response.getData().isEmpty()) {
                         log.warn("获取到的路由配置数据为空");
-                        return Flux.empty();
-                    }
 
+                        // 返回缓存数据
+                        return Flux.fromIterable(cachedRoutes);
+                    }
                     log.info("成功获取到{}条路由配置", response.getData().size());
 
-                    // 将数据转换为 Flux
+                    // 更新缓存
+                    cachedRoutes = response.getData();
+                    lastFetchTime = currentTime;
+
+                    // 返回新数据
                     return Flux.fromIterable(response.getData());
                 })
                 .onErrorResume(WebClientResponseException.class, ex -> {
                     // 捕获 WebClient 异常
                     log.error("请求路由配置时发生错误 - 状态码: {}, 消息: {}",
                             ex.getStatusCode(), ex.getMessage());
-                    return Flux.empty();
+
+                    // 返回缓存数据
+                    return Flux.fromIterable(cachedRoutes);
                 })
                 .onErrorResume(e -> {
                     // 捕获其他类型的异常
                     log.error("请求路由配置时发生未知错误: {}", e.getMessage());
-                    return Flux.empty();
+
+                    // 返回缓存数据
+                    return Flux.fromIterable(cachedRoutes);
                 });
     }
 
