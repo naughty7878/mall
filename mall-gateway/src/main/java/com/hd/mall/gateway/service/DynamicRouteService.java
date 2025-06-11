@@ -136,6 +136,9 @@ public class DynamicRouteService {
     // 触发路由刷新
     private void refreshRoutes() {
         if (publisher != null) {
+            // 清空使用缓存数据标识
+            lastFetchTime = 0;
+
             // 发布事件通知网关刷新路由
             publisher.publishEvent(new RefreshRoutesEvent(this));
         }
