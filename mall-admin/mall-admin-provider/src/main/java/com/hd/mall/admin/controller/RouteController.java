@@ -11,8 +11,8 @@ import com.hd.mall.admin.service.IServerService;
 import com.hd.mall.common.api.ApiRequest;
 import com.hd.mall.common.api.ApiResponse;
 import com.hd.mall.common.util.BeanCopyUtils;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -40,7 +40,7 @@ public class RouteController implements RouteRemoteService {
     }
 
     @Override
-    public ApiResponse<ApiDto> getRouteApi(@Validated ApiRequest<ApiReqDto> req) {
+    public ApiResponse<ApiDto> getRouteApi(@Valid ApiRequest<ApiReqDto> req) {
         Api api = apiService.queryByCode(req.getData().getCode());
         return ApiResponse.success(BeanCopyUtils.copyObject(api, ApiDto.class));
     }

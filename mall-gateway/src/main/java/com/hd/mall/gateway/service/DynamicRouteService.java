@@ -1,6 +1,7 @@
 package com.hd.mall.gateway.service;
 
 import com.hd.mall.gateway.api.ApiResponse;
+import com.hd.mall.gateway.constants.GatewayConstants;
 import com.hd.mall.gateway.dto.ServerDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -106,15 +107,62 @@ public class DynamicRouteService {
                 });
     }
 
+//    // 返回单个RouteDefinition
+//    public RouteDefinition convertToRouteDefinition(ServerDto serverDto) {
+//        RouteDefinition definition = new RouteDefinition();
+//        // 逻辑
+//        ....
+//        return definition;
+//    }
 
     /**
      * 将ServerDto转换为RouteDefinition
      */
-    public RouteDefinition convertToRouteDefinition(ServerDto serverDto) {
+    public List<RouteDefinition> convertToMultipleRouteDefinitions(ServerDto serverDto) {
+        List<RouteDefinition> definitions = new ArrayList<>();
+        // 服务路由
+        RouteDefinition serverRouteDefinition = buildServerRouteDefinition(serverDto);
+        definitions.add(serverRouteDefinition);
+        // API路由
+        RouteDefinition apiRouteDefinition = buildApiRouteDefinition(serverDto);
+        definitions.add(apiRouteDefinition);
+
+        // 可以添加更多转换逻辑，如Filters等
+        return definitions;
+    }
+
+    private RouteDefinition buildServerRouteDefinition(ServerDto serverDto) {
         RouteDefinition definition = new RouteDefinition();
-        definition.setId("dynamic-route-" + serverDto.getCode());
+        definition.setId("dynamic-server-" + serverDto.getCode());
+        definition.setUri(URI.create(serverDto.getUrl()));
+
+        // 1. 请求头断言配置
+        PredicateDefinition apiHeaderPredicate = new PredicateDefinition();
+        apiHeaderPredicate.setName("Header");
+        apiHeaderPredicate.addArg(NameUtils.generateName(0), GatewayConstants.HEADER_SERVER);
+        apiHeaderPredicate.addArg(NameUtils.generateName(1), "^(" + serverDto.getCode() + ")$");
+        definition.getPredicates().add(apiHeaderPredicate);
+
+        // 2. 耗时统计过滤器
+        FilterDefinition timingFilter = new FilterDefinition();
+        timingFilter.setName("TimingFilterFactory");
+        definition.getFilters().add(timingFilter);
+
+        // 3. 动态过滤器配置（动态路由）
+        FilterDefinition dynamicFilter = new FilterDefinition();
+        dynamicFilter.setName("DynamicServerFilterFactory");
+        // 添加过滤器需要的参数
+        dynamicFilter.addArg("serverCode", serverDto.getCode());
+        definition.getFilters().add(dynamicFilter);
+
+        return definition;
+    }
+
+    private RouteDefinition buildApiRouteDefinition(ServerDto serverDto) {
+        RouteDefinition definition = new RouteDefinition();
+        definition.setId("dynamic-api-" + serverDto.getCode());
 //        definition.setUri(URI.create(serverDto.getUrl()));
-        definition.setUri(URI.create("http://localhost:6000"));
+        definition.setUri(URI.create(serverDto.getUrl()));
 
         // 1. 路径断言配置
         PredicateDefinition pathPredicate = new PredicateDefinition();
@@ -127,7 +175,7 @@ public class DynamicRouteService {
         // 2. 请求头断言配置
         PredicateDefinition apiHeaderPredicate = new PredicateDefinition();
         apiHeaderPredicate.setName("Header");
-        apiHeaderPredicate.addArg(NameUtils.generateName(0), "api");
+        apiHeaderPredicate.addArg(NameUtils.generateName(0), GatewayConstants.HEADER_API);
         apiHeaderPredicate.addArg(NameUtils.generateName(1), "^(" + serverDto.getCode() + "\\..+)$");
         definition.getPredicates().add(apiHeaderPredicate);
 
@@ -143,13 +191,11 @@ public class DynamicRouteService {
 
         // 5. 动态过滤器配置（动态路由）
         FilterDefinition dynamicFilter = new FilterDefinition();
-        dynamicFilter.setName("DynamicFilterFactory");
-
+        dynamicFilter.setName("DynamicApiFilterFactory");
         // 添加过滤器需要的参数
         dynamicFilter.addArg("serverCode", serverDto.getCode());
         definition.getFilters().add(dynamicFilter);
 
-        // 可以添加更多转换逻辑，如Filters等
         return definition;
     }
 

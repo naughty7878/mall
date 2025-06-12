@@ -8,18 +8,18 @@ import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-public class DynamicFilterFactory extends AbstractGatewayFilterFactory<DynamicFilterFactory.Config> {
+public class DynamicServerFilterFactory extends AbstractGatewayFilterFactory<DynamicServerFilterFactory.Config> {
 
     @Autowired
-    private DynamicFilter dynamicFilter;
+    private DynamicServerFilter dynamicServerFilter;
 
-    public DynamicFilterFactory() {
+    public DynamicServerFilterFactory() {
         super(Config.class);
     }
 
     @Override
     public GatewayFilter apply(Config config) {
-        return dynamicFilter;
+        return dynamicServerFilter;
         // 每次创建新的过滤器实例，传入当前配置，扩展写法
 //        return new DynamicFilter(config.getServerCode());
     }

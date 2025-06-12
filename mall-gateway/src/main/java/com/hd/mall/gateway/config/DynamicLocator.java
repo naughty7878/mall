@@ -21,7 +21,15 @@ public class DynamicLocator implements RouteDefinitionLocator {
         log.info("getRouteDefinitions() called");
 //        log.debug("Call stack: ", new Exception("Stack Trace"));
         return dynamicRouteService.fetchRoutesFromExternalApi()
-                .map(dto -> dynamicRouteService.convertToRouteDefinition(dto)) // 转换并直接返回
+                .flatMap(serverDto -> {
+                    try {
+                        // 调用转换方法，返回包含多个RouteDefinition的Flux
+                        return Flux.fromIterable(dynamicRouteService.convertToMultipleRouteDefinitions(serverDto));
+                    } catch (Exception e) {
+                        log.error("Failed to convert serverDto to route definitions: {}", serverDto, e);
+                        return Flux.empty(); // 单个转换失败不影响其他
+                    }
+                })
                 .onErrorResume(e -> {
                     log.error("Failed to fetch routes from external API", e);
                     return Flux.empty(); // 如果出错，返回空的路由定义

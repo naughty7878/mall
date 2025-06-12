@@ -21,7 +21,7 @@ import reactor.core.publisher.Mono;
 @Slf4j
 @Order(10000)
 @Component
-public class DynamicFilter implements GatewayFilter {
+public class DynamicApiFilter implements GatewayFilter {
 
     @Autowired
     private ErrorService errorService;

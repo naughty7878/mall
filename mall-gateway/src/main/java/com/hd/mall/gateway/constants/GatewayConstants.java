@@ -2,7 +2,11 @@ package com.hd.mall.gateway.constants;
 
 public class GatewayConstants {
     private GatewayConstants() {} // 防止实例化
-    
+    // server请求头
+    public static final String HEADER_SERVER = "server";
+    // api请求头
+    public static final String HEADER_API = "api";
+
     // API信息属性键
     public static final String API_INFO_ATTRIBUTE = "API-INFO";
     
