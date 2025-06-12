@@ -28,7 +28,7 @@ spring:
   datasource:
     #MySQL配置
     driverClassName: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://192.168.1.170:3306/mall_ums?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://192.168.1.170:3306/mall_ums?allowPublicKeyRetrieval=true&useSSL=false
     username: root
     password: 123456
 

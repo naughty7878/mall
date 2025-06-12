@@ -20,9 +20,18 @@ import org.springframework.stereotype.Service;
 public class ApiServiceImpl extends ServiceImpl<ApiMapper, Api> implements IApiService {
 
     @Override
-    public Api getRouteApi(Long id) {
+    public Api queryById(Long id) {
         LambdaQueryWrapper<Api> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(Api::getId, id)
+                .eq(Api::getDeletedFlag, DeletedStatus.NOT_DELETED)
+                .last("LIMIT 1");
+        return baseMapper.selectOne(queryWrapper);
+    }
+
+    @Override
+    public Api queryByCode(String code) {
+        LambdaQueryWrapper<Api> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(Api::getCode, code)
                 .eq(Api::getDeletedFlag, DeletedStatus.NOT_DELETED)
                 .last("LIMIT 1");
         return baseMapper.selectOne(queryWrapper);

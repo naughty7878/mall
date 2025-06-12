@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.event.RefreshRoutesEvent;
+import org.springframework.cloud.gateway.filter.FilterDefinition;
 import org.springframework.cloud.gateway.handler.predicate.PredicateDefinition;
 import org.springframework.cloud.gateway.route.RouteDefinition;
 import org.springframework.cloud.gateway.support.NameUtils;
@@ -31,14 +32,17 @@ public class DynamicRouteService {
     private ApplicationEventPublisher publisher;
 
     @Value("${gateway.route.server.url:http://localhost:6000/route/server/list}")
-    private String serverApiUrl;
+    private String serverUrl;
+
+    // 10 * 60 * 1000; // 缓存有效期（毫秒）
+    @Value("${gateway.route.cache.ttl:600000}")
+    private Long cacheTtl;
 
     /**
      * 缓存的路由数据
      */
     private List<ServerDto> cachedRoutes = new ArrayList<>();
     private long lastFetchTime = 0;
-    private static final long CACHE_TTL = 10 * 60 * 1000; // 缓存有效期（毫秒）
 
     /**
      * 从外部 API 获取路由规则（带缓存）
@@ -48,14 +52,14 @@ public class DynamicRouteService {
         long currentTime = System.currentTimeMillis();
 
         // 如果缓存有效且未过期，直接返回缓存数据
-        if (!cachedRoutes.isEmpty() && (currentTime - lastFetchTime < CACHE_TTL)) {
+        if (!cachedRoutes.isEmpty() && (currentTime - lastFetchTime < cacheTtl)) {
             log.info("使用缓存路由配置数据，缓存条数: {}", cachedRoutes.size());
             return Flux.fromIterable(cachedRoutes);
         }
 
         // 发起 HTTP 请求
         return webClient.post()
-                .uri(serverApiUrl)
+                .uri(serverUrl)
                 .retrieve()
                 .bodyToMono(new ParameterizedTypeReference<ApiResponse<List<ServerDto>>>() {
                 })
@@ -112,21 +116,38 @@ public class DynamicRouteService {
 //        definition.setUri(URI.create(serverDto.getUrl()));
         definition.setUri(URI.create("http://localhost:6000"));
 
-        // 设置路径断言
-//        PredicateDefinition predicate = new PredicateDefinition();
-//        predicate.setName("Path");
-//        predicate.addArg(NameUtils.generateName(0), "/route/api");
-////        predicate.addArg(NameUtils.generateName(0), "/" + serverDto.getCode() + "/api"); // 根据服务配置不同路径
-//        definition.getPredicates().add(predicate);
+        // 1. 路径断言配置
+        PredicateDefinition pathPredicate = new PredicateDefinition();
+        pathPredicate.setName("Path");
+        pathPredicate.addArg(NameUtils.generateName(0), "/route/api");
+//        predicate.addArg(NameUtils.generateName(0), "/" + serverDto.getCode() + "/api"); // 根据服务配置不同路径
+        definition.getPredicates().add(pathPredicate);
 
-        // 设置请求头断言 - 确保 api 头不能为空
-        PredicateDefinition xApiHeaderPredicate = new PredicateDefinition();
-        xApiHeaderPredicate.setName("Header");
-        xApiHeaderPredicate.addArg(NameUtils.generateName(0), "API");
-        // 正则表达式确保头以服务code开头
-        xApiHeaderPredicate.addArg(NameUtils.generateName(1), "^(" + serverDto.getCode() + "\\..+)$");
-        definition.getPredicates().add(xApiHeaderPredicate);
 
+        // 2. 请求头断言配置
+        PredicateDefinition apiHeaderPredicate = new PredicateDefinition();
+        apiHeaderPredicate.setName("Header");
+        apiHeaderPredicate.addArg(NameUtils.generateName(0), "api");
+        apiHeaderPredicate.addArg(NameUtils.generateName(1), "^(" + serverDto.getCode() + "\\..+)$");
+        definition.getPredicates().add(apiHeaderPredicate);
+
+        // 3. 耗时统计过滤器
+        FilterDefinition timingFilter = new FilterDefinition();
+        timingFilter.setName("TimingFilterFactory");
+        definition.getFilters().add(timingFilter);
+
+        // 4. 接口信息过滤器
+        FilterDefinition apiInfoFilter = new FilterDefinition();
+        apiInfoFilter.setName("ApiInfoFilterFactory");
+        definition.getFilters().add(apiInfoFilter);
+
+        // 5. 动态过滤器配置（动态路由）
+        FilterDefinition dynamicFilter = new FilterDefinition();
+        dynamicFilter.setName("DynamicFilterFactory");
+
+        // 添加过滤器需要的参数
+        dynamicFilter.addArg("serverCode", serverDto.getCode());
+        definition.getFilters().add(dynamicFilter);
 
         // 可以添加更多转换逻辑，如Filters等
         return definition;

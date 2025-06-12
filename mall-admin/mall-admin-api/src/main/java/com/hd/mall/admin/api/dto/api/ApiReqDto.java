@@ -9,7 +9,7 @@ import lombok.Data;
 public class ApiReqDto {
 
     /**
-     * 主键ID
+     * CODE
      */
-    private Long id;
+    private String code;
 }

@@ -31,8 +31,12 @@ spring:
           enabled: true
           # 使用小写service-id
           lower-case-service-id: true
-
-
+  data:
+    redis:
+      host: 192.168.1.170     # Redis 服务器地址
+      port: 6379           # Redis 端口
+  #    password: 123456     # Redis 密码（如果没有密码，可以省略）
+      database: 1          # 使用的 Redis 数据库索引（默认 0）
 
 # 日志记录输出配置
 logging:

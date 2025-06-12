@@ -41,7 +41,7 @@ public class RouteController implements RouteRemoteService {
 
     @Override
     public ApiResponse<ApiDto> getRouteApi(@Validated ApiRequest<ApiReqDto> req) {
-        Api api = apiService.getRouteApi(req.getData().getId());
+        Api api = apiService.queryByCode(req.getData().getCode());
         return ApiResponse.success(BeanCopyUtils.copyObject(api, ApiDto.class));
     }
 }
