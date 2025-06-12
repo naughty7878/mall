@@ -4,8 +4,8 @@ import com.hd.mall.admin.entity.User;
 import com.hd.mall.admin.service.IUserService;
 import com.hd.mall.common.api.ApiRequest;
 import com.hd.mall.common.api.ApiResponse;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,7 +25,7 @@ public class UserController {
     private IUserService userService;
 
     @PostMapping("/user/get")
-    public ApiResponse<User> getUser(@RequestBody  @Valid ApiRequest<User> req) {
+    public ApiResponse<User> getUser(@RequestBody  @Validated ApiRequest<User> req) {
         User user = userService.getById(req.getData().getId());
         return ApiResponse.success(user);
     }

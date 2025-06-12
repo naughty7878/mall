@@ -20,7 +20,9 @@ public interface RouteRemoteService {
     @PostMapping("/route/server/list")
     ApiResponse<List<ServerDto>> listRouteServer();
 
-    // 服务列表
+    // API获取
     @PostMapping("/route/api/get")
     ApiResponse<ApiDto> getRouteApi(@RequestBody ApiRequest<ApiReqDto> req);
+
+
 }
