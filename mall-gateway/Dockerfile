@@ -1,5 +1,5 @@
 # 使用最小化的 JRE 运行环境
-FROM openjdk:8-jre-alpine
+FROM eclipse-temurin:17-jre-jammy
 
 # 设置工作目录
 WORKDIR /app
