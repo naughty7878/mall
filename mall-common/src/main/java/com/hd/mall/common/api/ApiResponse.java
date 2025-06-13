@@ -19,6 +19,13 @@ public class ApiResponse<T> {
 
     /**
      * 成功返回结果
+     */
+    public static <T> ApiResponse<T> success() {
+        return new ApiResponse<T>(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getMessage(), null);
+    }
+
+    /**
+     * 成功返回结果
      *
      * @param data 获取的数据
      */

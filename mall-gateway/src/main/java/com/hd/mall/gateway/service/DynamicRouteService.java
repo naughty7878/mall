@@ -32,7 +32,7 @@ public class DynamicRouteService {
     @Autowired
     private ApplicationEventPublisher publisher;
 
-    @Value("${gateway.route.server.url:http://localhost:6000/route/server/list}")
+    @Value("${gateway.route.server.url:http://localhost:10001/route/server/list}")
     private String serverUrl;
 
     // 10 * 60 * 1000; // 缓存有效期（毫秒）
@@ -134,7 +134,10 @@ public class DynamicRouteService {
     private RouteDefinition buildServerRouteDefinition(ServerDto serverDto) {
         RouteDefinition definition = new RouteDefinition();
         definition.setId("dynamic-server-" + serverDto.getCode());
-        definition.setUri(URI.create(serverDto.getUrl()));
+        // 负载均衡 URI
+        definition.setUri(URI.create("lb://" + serverDto.getName()));
+        // 指向URL地址：serverDto.getUrl() = http://127.0.0.1:10001
+//        definition.setUri(URI.create(serverDto.getUrl()));
 
         // 1. 请求头断言配置
         PredicateDefinition apiHeaderPredicate = new PredicateDefinition();
@@ -161,8 +164,10 @@ public class DynamicRouteService {
     private RouteDefinition buildApiRouteDefinition(ServerDto serverDto) {
         RouteDefinition definition = new RouteDefinition();
         definition.setId("dynamic-api-" + serverDto.getCode());
+        // 负载均衡 URI
+        definition.setUri(URI.create("lb://" + serverDto.getName()));
+        // 指向URL地址：serverDto.getUrl() = http://127.0.0.1:10001
 //        definition.setUri(URI.create(serverDto.getUrl()));
-        definition.setUri(URI.create(serverDto.getUrl()));
 
         // 1. 路径断言配置
         PredicateDefinition pathPredicate = new PredicateDefinition();

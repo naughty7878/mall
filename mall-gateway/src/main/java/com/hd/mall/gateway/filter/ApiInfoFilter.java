@@ -37,7 +37,7 @@ public class ApiInfoFilter implements GatewayFilter {
     @Autowired
     private ErrorService errorService;
 
-    @Value("${gateway.route.api.url:http://localhost:6000/route/api/get}")
+    @Value("${gateway.route.api.url:http://localhost:10001/route/api/get}")
     private String apiUrl;
     // 缓存过期时间，默认 60 分钟
     @Value("${gateway.route.cache.expiry:60}")

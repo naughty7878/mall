@@ -1,13 +1,17 @@
 package com.hd.mall.common.exception;
 
 import com.hd.mall.common.api.ApiResponse;
+import com.hd.mall.common.api.ResultCode;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.util.stream.Collectors;
 
@@ -58,6 +62,16 @@ public class GlobalExceptionHandler {
 
         log.warn("参数校验失败: {}", errorMessage);
         return ApiResponse.validateFailed(errorMessage);
+    }
+
+    /**
+     * 处理资源未找到异常 (Spring 6.x 新增)
+     */
+    @ExceptionHandler(NoResourceFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ApiResponse<Void> handleNoResourceFoundException(NoResourceFoundException e, HttpServletRequest request) {
+        log.warn("资源未找到 [{} {}]: {}", request.getMethod(), request.getRequestURI(), e.getMessage());
+        return ApiResponse.failed(ResultCode.NOT_FOUND);
     }
 
     /**

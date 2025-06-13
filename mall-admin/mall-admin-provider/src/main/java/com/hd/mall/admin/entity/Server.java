@@ -41,6 +41,11 @@ public class Server implements Serializable {
     private String name;
 
     /**
+     * 显示名称
+     */
+    private String showName;
+
+    /**
      * URL
      */
     private String url;

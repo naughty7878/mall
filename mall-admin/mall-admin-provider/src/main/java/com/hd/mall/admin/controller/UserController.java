@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2025-06-09
  */
 @RestController
+//@Tag(name = "用户管理", description = "用户管理接口")
 public class UserController {
 
     @Autowired
@@ -29,4 +30,43 @@ public class UserController {
         User user = userService.getById(req.getData().getId());
         return ApiResponse.success(user);
     }
+
+//
+//    @GetMapping
+//    @Operation(summary = "获取所有用户")
+//    public ApiResponse<List<User>> getAllUsers() {
+//        return ApiResponse.success(userService.list());
+//    }
+//
+//    @GetMapping("/{id}")
+//    @Operation(summary = "根据ID获取用户")
+//    public ApiResponse<User> getUserById(
+//            @Parameter(description = "用户ID", example = "1") @PathVariable Long id) {
+//        User user = userService.getById(id);
+//        return ApiResponse.success(user);
+//    }
+//
+//    @PostMapping
+//    @Operation(summary = "创建用户")
+//    public ApiResponse<User> createUser(@RequestBody UserDTO userDTO) {
+//        User user = userService.getById(1L);
+//        return ApiResponse.success(user);
+//    }
+//
+//    @PutMapping("/{id}")
+//    @Operation(summary = "更新用户")
+//    public ApiResponse<User> updateUser(
+//            @Parameter(description = "用户ID", example = "1") @PathVariable Long id,
+//            @RequestBody UserDTO userDTO) {
+//        User user = userService.getById(1L);
+//        return ApiResponse.success(user);
+//
+//    }
+//
+//    @DeleteMapping("/{id}")
+//    @Operation(summary = "删除用户")
+//    public ApiResponse<Void> deleteUser(
+//            @Parameter(description = "用户ID", example = "1") @PathVariable Long id) {
+//        return ApiResponse.success();
+//    }
 }

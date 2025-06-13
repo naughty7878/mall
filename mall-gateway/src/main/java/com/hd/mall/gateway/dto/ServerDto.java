@@ -28,8 +28,14 @@ public class ServerDto implements Serializable {
     private String code;
 
     /**
+     * 名字
+     */
+    private String name;
+
+    /**
      * URL
      */
     private String url;
 
 }
+

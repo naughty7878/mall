@@ -1,6 +1,6 @@
 # 端口
 server:
-  port: 9000
+  port: 10020
 
 
 spring:

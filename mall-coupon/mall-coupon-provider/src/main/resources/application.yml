@@ -1,6 +1,6 @@
 # 端口
 server:
-  port: 7000
+  port: 10010
 
 spring:
   application:

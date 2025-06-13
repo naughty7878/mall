@@ -1,6 +1,6 @@
 package com.hd.mall.admin.controller;
 
-import com.hd.mall.admin.api.LoginRequest;
+import com.hd.mall.admin.api.dto.LoginRequest;
 import com.hd.mall.common.api.ApiResponse;
 import com.hd.mall.common.api.ResultCode;
 import com.hd.mall.common.util.JwtUtils;

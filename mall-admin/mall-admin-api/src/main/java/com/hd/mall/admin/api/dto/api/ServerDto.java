@@ -1,5 +1,6 @@
 package com.hd.mall.admin.api.dto.api;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -13,6 +14,7 @@ import java.io.Serializable;
  * @since 2025-06-09
  */
 @Data
+@Schema(description = "SERVER传输对象")
 public class ServerDto implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -26,6 +28,11 @@ public class ServerDto implements Serializable {
      * CODE
      */
     private String code;
+
+    /**
+     * 名字
+     */
+    private String name;
 
     /**
      * URL

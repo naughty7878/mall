@@ -9,6 +9,9 @@
   * 安全框架： Spring Security
   * 第二项
   * 第三项
+- 接口文档：Knife4j 
+  * 文档地址：http://ip:port/doc.html
+  * swagger地址：http://ip:port/swagger-ui/index.html
 
 
 ## 项目模块

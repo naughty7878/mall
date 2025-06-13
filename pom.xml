@@ -37,6 +37,8 @@
         <!-- 工具类 -->
         <hutool-all.version>5.8.26</hutool-all.version>  <!-- Hutool最新稳定版 -->
         <lombok.version>1.18.30</lombok.version>
+        <knife4j-openapi3.version>4.5.0</knife4j-openapi3.version>
+
 
         <framework.version>1.0-SNAPSHOT</framework.version>
     </properties>
@@ -122,6 +124,13 @@
                 <artifactId>lombok</artifactId>
                 <version>${lombok.version}</version>
                 <scope>provided</scope>
+            </dependency>
+
+            <!-- 接口文档 Knife4j 包含依赖 pringDoc OpenAPI -->
+            <dependency>
+                <groupId>com.github.xiaoymin</groupId>
+                <artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>
+                <version>${knife4j-openapi3.version}</version>
             </dependency>
 
             <!-- ========== 自定义模块 ========== -->
