@@ -20,12 +20,23 @@
         <java.version>17</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <!-- Spring 相关 -->
+        <spring-boot.version>3.2.5</spring-boot.version>  <!-- Spring Boot 3.x 最新稳定版 -->
 
         <framework.version>1.0-SNAPSHOT</framework.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
+            <!-- ========== Spring 官方依赖 ========== -->
+            <!-- Spring Boot 依赖管理 -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
             <dependency>
                 <groupId>com.hd.mall</groupId>
                 <artifactId>mall</artifactId>
@@ -79,7 +90,6 @@
         <dependency>
             <groupId>io.projectreactor</groupId>
             <artifactId>reactor-core</artifactId>
-            <version>3.6.5</version>
         </dependency>
 
         <dependency>
@@ -98,7 +108,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis-reactive</artifactId>
-            <version>3.2.5</version>
         </dependency>
 
         <!-- Redis（可选，用于存储令牌黑名单） -->
