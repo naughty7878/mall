@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * <p>
  * 系统用户表 前端控制器
@@ -27,6 +29,16 @@ public class UserController {
 
     @PostMapping("/user/get")
     public ApiResponse<User> getUser(@RequestBody  @Validated ApiRequest<User> req) {
+        User user = userService.getById(req.getData().getId());
+        return ApiResponse.success(user);
+    }
+
+
+    @PostMapping("/user/sleep")
+    public ApiResponse<User> sleepUser(@RequestBody  @Validated ApiRequest<User> req) throws InterruptedException {
+        // 生成 [0, 10) 的随机整数（0-9）
+        int random1 = (int) (Math.random() * 9);
+        TimeUnit.SECONDS.sleep(random1);
         User user = userService.getById(req.getData().getId());
         return ApiResponse.success(user);
     }
