@@ -11,9 +11,11 @@ import java.util.List;
  */
 @Data
 public class PageResponse<T> {
+    private long code;
+    private String message;
+    private List<T> data;           // 数据记录列表
     private Integer pageNum;           // 当前页码
     private Integer pageSize;          // 每页大小
-    private List<T> data;           // 数据记录列表
     private Long total;                // 总记录数
     private Integer totalPages;        // 总页数
 
