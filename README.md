@@ -13,6 +13,7 @@
   * 文档地址：http://ip:port/doc.html
   * swagger地址：http://ip:port/swagger-ui/index.html
 
+JDK版本：17
 
 ## 项目模块
 - 后台模块   admin
