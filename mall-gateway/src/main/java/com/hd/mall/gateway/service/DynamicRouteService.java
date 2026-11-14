@@ -172,8 +172,8 @@ public class DynamicRouteService {
         // 1. 路径断言配置
         PredicateDefinition pathPredicate = new PredicateDefinition();
         pathPredicate.setName("Path");
-        pathPredicate.addArg(NameUtils.generateName(0), "/route/api");
-//        predicate.addArg(NameUtils.generateName(0), "/" + serverDto.getCode() + "/api"); // 根据服务配置不同路径
+        pathPredicate.addArg(NameUtils.generateName(0), "/openapi/execute");
+        pathPredicate.addArg(NameUtils.generateName(1), "/internal/execute");
         definition.getPredicates().add(pathPredicate);
 
 
@@ -183,6 +183,13 @@ public class DynamicRouteService {
         apiHeaderPredicate.addArg(NameUtils.generateName(0), GatewayConstants.HEADER_API);
         apiHeaderPredicate.addArg(NameUtils.generateName(1), "^(" + serverDto.getCode() + "\\..+)$");
         definition.getPredicates().add(apiHeaderPredicate);
+
+        // 后台暂不支持按版本查询，仅接受 v1，避免其他版本被误路由。
+        PredicateDefinition versionPredicate = new PredicateDefinition();
+        versionPredicate.setName("Header");
+        versionPredicate.addArg(NameUtils.generateName(0), GatewayConstants.HEADER_API_VERSION);
+        versionPredicate.addArg(NameUtils.generateName(1), "^v1$");
+        definition.getPredicates().add(versionPredicate);
 
         // 3. 耗时统计过滤器
         FilterDefinition timingFilter = new FilterDefinition();

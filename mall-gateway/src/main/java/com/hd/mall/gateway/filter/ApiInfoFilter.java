@@ -48,7 +48,7 @@ public class ApiInfoFilter implements GatewayFilter {
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
 
         // 1. 从请求头获取API code
-        String apiCode = exchange.getRequest().getHeaders().getFirst("api");
+        String apiCode = exchange.getRequest().getHeaders().getFirst(GatewayConstants.HEADER_API);
         if (apiCode == null || apiCode.isBlank()) {
             return chain.filter(exchange);
         }
