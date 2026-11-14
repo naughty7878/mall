@@ -39,3 +39,9 @@ logging:
   # 请求响应日志配置
   request:
     enabled: true  # 是否启用日志过滤器，默认false不生效
+
+management:
+  endpoint:
+    health:
+      probes:
+        enabled: true

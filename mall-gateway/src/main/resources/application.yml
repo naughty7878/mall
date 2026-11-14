@@ -42,3 +42,9 @@ spring:
 logging:
   level:
     root: debug
+
+management:
+  endpoint:
+    health:
+      probes:
+        enabled: true
