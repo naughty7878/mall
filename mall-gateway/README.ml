@@ -31,11 +31,11 @@
 | 路由类型 | 匹配条件 | 行为 |
 | --- | --- | --- |
 | 服务级 | 请求头 `X-Server` 的值等于服务编码 | 转发至对应服务，保持请求路径 |
-| API 级 | 请求路径为 `/openapi/execute` 或 `/internal/execute`，`X-Api-Code` 匹配 `服务编码.后缀`，`X-Api-Version` 为 `v1` | 查询 API 配置，以配置的 URL 改写路径后转发 |
+| API 级 | 请求路径为 `/openapi/execute` 或 `/internal/execute`，`X-Api-Code` 匹配 `服务编码.后缀` | 查询 API 配置，以配置的 URL 改写路径后转发 |
 
 ## API 请求处理流程
 
-1. 外部调用请求 `/openapi/execute`，内部调用请求 `/internal/execute`，在 `X-Api-Code` 请求头中携带 API 编码，例如 `member.coupons`，并在 `X-Api-Version` 中携带 `v1`。编码需要与后台实际配置一致。
+1. 外部调用请求 `/openapi/execute`，内部调用请求 `/internal/execute`，在 `X-Api-Code` 请求头中携带 API 编码，例如 `member.coupons`。编码需要与后台实际配置一致。`X-Api-Version` 可省略，省略时网关补充 `v1`，传入时保留原值。
 2. 路由匹配后，`ApiInfoFilter` 以 `gateway:api:` 加 API 编码作为 Redis 键查询接口信息。
 3. 缓存未命中时，网关向后台发送 POST 请求，默认地址为 `http://localhost:10001/route/api/get`，请求体中的 `data.code` 为 API 编码。成功后将结果写入 Redis，默认缓存 60 分钟。
 4. `DynamicApiFilter` 读取接口配置中的 `url`，改写请求路径并继续过滤器链，由网关转发到目标服务。
@@ -88,5 +88,5 @@ curl -X POST http://localhost:8888/internal/execute -H "X-Api-Code: member.coupo
 - 服务和 API 的缓存时间不同，后台配置变化不会保证立即在所有网关实例生效。服务列表请求失败时会沿用已有缓存，返回空列表也会沿用已有缓存。
 - Redis 未命中时 API 路由依赖 `mall-admin`；网关启动时若无法获取服务列表且没有本地缓存，动态路由可能不可用。
 - 仓库中有 `AuthFilter` 示例，但当前源码中未发现该类注册为 Spring Bean，因此不能据此认为认证已启用。正式使用前需要完善并验证认证、授权和配置接口的访问控制。
-- 两个 API 入口目前使用相同的路由逻辑，路径名称本身不提供内外网隔离或鉴权。后台目前仅按 API 编码查询，网关只接受 `v1`，尚不支持按版本选择不同的 API 配置。
+- 两个 API 入口目前使用相同的路由逻辑，路径名称本身不提供内外网隔离或鉴权。后台目前仅按 API 编码查询，版本头不参与 API 配置的选择。
 - 本地配置包含环境相关的内网地址和凭据，部署时应按环境调整并妥善管理敏感配置。

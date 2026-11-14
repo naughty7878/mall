@@ -184,13 +184,6 @@ public class DynamicRouteService {
         apiHeaderPredicate.addArg(NameUtils.generateName(1), "^(" + serverDto.getCode() + "\\..+)$");
         definition.getPredicates().add(apiHeaderPredicate);
 
-        // 后台暂不支持按版本查询，仅接受 v1，避免其他版本被误路由。
-        PredicateDefinition versionPredicate = new PredicateDefinition();
-        versionPredicate.setName("Header");
-        versionPredicate.addArg(NameUtils.generateName(0), GatewayConstants.HEADER_API_VERSION);
-        versionPredicate.addArg(NameUtils.generateName(1), "^v1$");
-        definition.getPredicates().add(versionPredicate);
-
         // 3. 耗时统计过滤器
         FilterDefinition timingFilter = new FilterDefinition();
         timingFilter.setName("TimingFilterFactory");

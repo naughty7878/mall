@@ -46,6 +46,12 @@ public class ApiInfoFilter implements GatewayFilter {
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
+        ServerWebExchange apiExchange = exchange;
+        if (!exchange.getRequest().getHeaders().containsKey(GatewayConstants.HEADER_API_VERSION)) {
+            apiExchange = exchange.mutate().request(exchange.getRequest().mutate()
+                    .header(GatewayConstants.HEADER_API_VERSION, "v1").build()).build();
+        }
+        final ServerWebExchange routedExchange = apiExchange;
 
         // 1. 从请求头获取API code
         String apiCode = exchange.getRequest().getHeaders().getFirst(GatewayConstants.HEADER_API);
@@ -59,12 +65,12 @@ public class ApiInfoFilter implements GatewayFilter {
                 .switchIfEmpty(getFromExternalApi(apiCode, redisKey))
                 .flatMap(apiInfo -> {
                     // 3. 将接口信息存入请求属性，供后续过滤器使用
-                    exchange.getAttributes().put(GatewayConstants.API_INFO_ATTRIBUTE, apiInfo);
-                    return chain.filter(exchange);
+                    routedExchange.getAttributes().put(GatewayConstants.API_INFO_ATTRIBUTE, apiInfo);
+                    return chain.filter(routedExchange);
                 })
                 .onErrorResume(e -> {
                     ApiResponse<String> errorResponse = ApiResponse.failed("获取接口信息失败: " + e.getMessage());
-                    return errorService.writeErrorResponse(exchange, errorResponse);
+                    return errorService.writeErrorResponse(routedExchange, errorResponse);
                 });
     }
 
