@@ -47,6 +47,8 @@ spring:
 logging:
   level:
     root: debug
+    org.springframework.cloud.gateway.route.RouteDefinitionRouteLocator: INFO
+    reactor.netty.resources.DefaultPooledConnectionProvider: INFO
     sun.rmi: INFO
     javax.management.remote.rmi: INFO
 
