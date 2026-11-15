@@ -31,7 +31,9 @@
 WebFlux 接收请求
     ↓
 WebFilter 层
-    └─ Spring Security：验证 Bearer Token、检查访问规则
+    └─ Spring Security
+         ├─ CORS：检查跨域规则；预检请求在此返回
+         └─ 正式请求：验证 Bearer Token、检查访问规则
     ↓
 Gateway 匹配路由（例如路径和 X-Api-Code）
     ↓
@@ -42,12 +44,15 @@ Gateway 过滤器层（仅匹配到路由后执行）
 转发到下游服务，响应沿过滤链返回客户端
 ```
 
-1. **WebFilter 层**：`SecurityConfig` 定义 Spring Security 的过滤链。健康检查和配置的匿名路径允许不带 Token 访问；其他请求需要 Keycloak 签发的有效 Bearer Token。网关验证签名、时间、issuer 和 audience；认证失败时返回 401，请求不会继续进入 Gateway 路由过滤器。
-2. **路由匹配**：认证通过后，Gateway 根据路由断言查找目标服务。例如 API 级路由根据入口路径和 `X-Api-Code` 匹配。未匹配到路由时，不会执行该路由的 Gateway 过滤器。
-3. **Gateway 过滤器层**：匹配路由后，Gateway 合并全局过滤器和该路由配置的过滤器，按各自的顺序执行。例如 `TimeoutFilter` 是全局过滤器，`ApiInfoFilter` 和 `DynamicApiFilter` 用于 API 级路由，分别获取 API 配置和改写路径。
-4. **转发和响应**：过滤器链继续执行后，由网关转发到目标服务。响应或错误会沿已执行的过滤链返回，过滤器可以记录耗时或处理错误。
+1. **CORS 跨域处理**：浏览器在部分跨域请求前会先发送 `OPTIONS` 预检。Spring Security 使用 `GlobalCorsConfig` 提供的规则检查来源、方法和请求头；允许的预检直接返回跨域响应，不进入路由或下游。非预检请求继续执行，非浏览器客户端也无需自行发送预检。
+2. **认证与访问规则**：健康检查和配置的匿名路径允许不带 Token 访问；其他请求需要 Keycloak 签发的有效 Bearer Token。网关验证签名、时间、issuer 和 audience；认证失败时返回 401，请求不会继续进入 Gateway 路由过滤器。允许预检不代表放开正式业务请求的认证。
+3. **路由匹配**：安全检查通过后，Gateway 根据路由断言查找目标服务。例如 API 级路由根据入口路径和 `X-Api-Code` 匹配。未匹配到路由时，不会执行该路由的 Gateway 过滤器。
+4. **Gateway 过滤器层**：匹配路由后，Gateway 合并全局过滤器和该路由配置的过滤器，按各自的顺序执行。例如 `TimeoutFilter` 是全局过滤器，`ApiInfoFilter` 和 `DynamicApiFilter` 用于 API 级路由，分别获取 API 配置和改写路径。
+5. **转发和响应**：过滤器链继续执行后，由网关转发到目标服务。响应或错误会沿已执行的过滤链返回，过滤器可以记录耗时或处理错误。
 
 `SecurityConfig` 是配置类，由它创建的 Spring Security 过滤链执行认证；它本身不是每次请求都重新执行的过滤器。WebFilter 与 Gateway 过滤器是不同层次，不能直接用 Gateway 过滤器的 `getOrder()` 数字比较它们的执行先后。健康检查允许匿名访问，但如果请求主动携带无效 Bearer Token，仍可能在认证阶段被拒绝。
+
+当前 CORS 规则允许任意来源、请求方法和请求头，并允许携带凭据；正式部署时应根据实际前端域名收紧。
 
 ## 路由加载流程
 

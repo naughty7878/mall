@@ -29,7 +29,7 @@ import static org.mockito.Mockito.when;
 
 @WebFluxTest(properties = {"spring.cloud.nacos.config.enabled=false", "spring.cloud.nacos.discovery.enabled=false",
         "spring.config.import=optional:classpath:/test-override.yml", "logging.level.root=INFO"})
-@Import({SecurityConfig.class, AnonymousAccessMatcher.class, SecurityConfigTest.TestController.class})
+@Import({SecurityConfig.class, GlobalCorsConfig.class, AnonymousAccessMatcher.class, SecurityConfigTest.TestController.class})
 class SecurityConfigTest {
     @Autowired
     private WebTestClient client;
@@ -60,6 +60,20 @@ class SecurityConfigTest {
         assertThat(validator.validate(jwt(List.of("account"))).hasErrors()).isTrue();
         assertThat(validator.validate(Jwt.withTokenValue("test").header("alg", "RS256")
                 .claim("sub", "test").build()).hasErrors()).isTrue();
+    }
+
+    @Test
+    void browserPreflightSucceedsWithoutTokenButBusinessRequestStillRequiresAuthentication() {
+        client.options().uri("http://localhost:8888/openapi/execute")
+                .header("Origin", "http://localhost:5173")
+                .header("Access-Control-Request-Method", "POST")
+                .header("Access-Control-Request-Headers", "authorization,content-type,x-api-code")
+                .exchange().expectStatus().isOk()
+                .expectHeader().valueEquals("Access-Control-Allow-Origin", "http://localhost:5173")
+                .expectHeader().exists("Access-Control-Allow-Headers");
+        client.post().uri("http://localhost:8888/openapi/execute").header("Origin", "http://localhost:5173")
+                .exchange().expectStatus().isUnauthorized()
+                .expectHeader().valueEquals("Access-Control-Allow-Origin", "http://localhost:5173");
     }
 
     @Test

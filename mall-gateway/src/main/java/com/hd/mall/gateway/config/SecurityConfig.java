@@ -28,7 +28,8 @@ public class SecurityConfig {
 
     @Bean
     SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http, AnonymousAccessMatcher anonymousAccessMatcher) {
-        return http.csrf(ServerHttpSecurity.CsrfSpec::disable)
+        return http.cors(Customizer.withDefaults())
+                .csrf(ServerHttpSecurity.CsrfSpec::disable)
                 .authorizeExchange(exchange -> exchange
                         .pathMatchers("/actuator/health", "/actuator/health/**").permitAll()
                         .matchers(anonymousAccessMatcher).permitAll()

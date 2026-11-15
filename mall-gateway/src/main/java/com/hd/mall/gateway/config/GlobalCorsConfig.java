@@ -3,7 +3,7 @@ package com.hd.mall.gateway.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.reactive.CorsWebFilter;
+import org.springframework.web.cors.reactive.CorsConfigurationSource;
 import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 
 /**
@@ -14,7 +14,7 @@ import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 public class GlobalCorsConfig {
 
     @Bean
-    public CorsWebFilter corsWebFilter(){
+    public CorsConfigurationSource corsConfigurationSource(){
 
         // 配置
         CorsConfiguration corsConfiguration = new CorsConfiguration();
@@ -28,6 +28,6 @@ public class GlobalCorsConfig {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", corsConfiguration);
 
-        return new CorsWebFilter(source);
+        return source;
     }
 }
