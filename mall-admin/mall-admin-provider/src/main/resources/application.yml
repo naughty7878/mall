@@ -35,7 +35,9 @@ spring:
   # 日志记录输出配置
 logging:
   level:
-    root: DEBUG
+    root: INFO
+    sun.rmi: INFO
+    javax.management.remote.rmi: INFO
   # 请求响应日志配置
   request:
     enabled: true  # 是否启用日志过滤器，默认false不生效

@@ -68,6 +68,21 @@
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+
         <!-- Micrometer Tracing 核心 -->
         <dependency>
             <groupId>io.micrometer</groupId>
@@ -98,10 +113,10 @@
         </dependency>
 
         <!-- Redis（可选，用于存储令牌黑名单） -->
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.boot</groupId>-->
-<!--            <artifactId>spring-boot-starter-data-redis</artifactId>-->
-<!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.springframework.boot</groupId>-->
+        <!--            <artifactId>spring-boot-starter-data-redis</artifactId>-->
+        <!--        </dependency>-->
     </dependencies>
 
 
@@ -121,7 +136,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-<!--                <version>3.2.5</version> &lt;!&ndash; 使用你的 Spring Boot 版本 &ndash;&gt;-->
+                <!--                <version>3.2.5</version> &lt;!&ndash; 使用你的 Spring Boot 版本 &ndash;&gt;-->
                 <executions>
                     <execution>
                         <goals>

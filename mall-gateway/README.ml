@@ -21,6 +21,34 @@
 
 `mall-admin` 负责提供服务及 API 的配置数据，网关加载这些数据并执行路由。网关访问后台配置接口使用独立的 HTTP 地址，默认指向本机的 `10001` 端口。
 
+## 请求进入网关后的流程
+
+网关基于 Spring WebFlux 接收普通 HTTP 请求。WebFlux 的 `WebFilter` 和 Spring Cloud Gateway 的过滤器处在不同层次：
+
+```text
+客户端 HTTP 请求
+    ↓
+WebFlux 接收请求
+    ↓
+WebFilter 层
+    └─ Spring Security：验证 Bearer Token、检查访问规则
+    ↓
+Gateway 匹配路由（例如路径和 X-Api-Code）
+    ↓
+Gateway 过滤器层（仅匹配到路由后执行）
+    ├─ GlobalFilter
+    └─ 当前路由的 GatewayFilter
+    ↓
+转发到下游服务，响应沿过滤链返回客户端
+```
+
+1. **WebFilter 层**：`SecurityConfig` 定义 Spring Security 的过滤链。健康检查和配置的匿名路径允许不带 Token 访问；其他请求需要 Keycloak 签发的有效 Bearer Token。网关验证签名、时间、issuer 和 audience；认证失败时返回 401，请求不会继续进入 Gateway 路由过滤器。
+2. **路由匹配**：认证通过后，Gateway 根据路由断言查找目标服务。例如 API 级路由根据入口路径和 `X-Api-Code` 匹配。未匹配到路由时，不会执行该路由的 Gateway 过滤器。
+3. **Gateway 过滤器层**：匹配路由后，Gateway 合并全局过滤器和该路由配置的过滤器，按各自的顺序执行。例如 `TimeoutFilter` 是全局过滤器，`ApiInfoFilter` 和 `DynamicApiFilter` 用于 API 级路由，分别获取 API 配置和改写路径。
+4. **转发和响应**：过滤器链继续执行后，由网关转发到目标服务。响应或错误会沿已执行的过滤链返回，过滤器可以记录耗时或处理错误。
+
+`SecurityConfig` 是配置类，由它创建的 Spring Security 过滤链执行认证；它本身不是每次请求都重新执行的过滤器。WebFilter 与 Gateway 过滤器是不同层次，不能直接用 Gateway 过滤器的 `getOrder()` 数字比较它们的执行先后。健康检查允许匿名访问，但如果请求主动携带无效 Bearer Token，仍可能在认证阶段被拒绝。
+
 ## 路由加载流程
 
 1. `DynamicLocator` 实现 Spring Cloud Gateway 的 `RouteDefinitionLocator`，在网关获取路由定义时调用 `DynamicRouteService`。
@@ -59,6 +87,21 @@
 | `gateway.route.cache.ttl` | `600000` | 服务列表本地缓存时间，单位毫秒 |
 | `gateway.route.cache.expiry` | `60` | API 信息 Redis 缓存时间，单位分钟 |
 | `gateway.expiry` | `60` | 全局超时过滤器的超时时间，单位秒 |
+| `gateway.security.anonymous-paths` | `["POST /callbacks/payment/provider-a"]` | 免 Keycloak Token 的路径规则数组 |
+
+匿名规则按 HTTP 方法和完整路径精确匹配，方法使用大写，不支持通配符。网关在每次请求时从当前环境读取配置；在 Nacos 的 `mall-gateway.yaml` 中维护此项，配置正常刷新后无需重启即可生效：
+
+```yaml
+gateway:
+  security:
+    anonymous-paths:
+      - "GET /public/info"
+      - "POST /callbacks/payment/provider-a"
+```
+
+清空规则时请在 Nacos 显式设置 `anonymous-paths: []`，避免回退到本地默认值。原配置项 `gateway.security.public-callbacks` 不再生效，请将已配置的规则迁移到新配置项。
+
+此配置只控制是否要求 Keycloak Token，不会创建路由或完成第三方验签。实际回调需要配置可到达业务服务的路由，并由业务服务或网关按第三方协议验证签名、处理重放和重复通知。若将 `/openapi/execute` 或 `/internal/execute` 设为匿名，会放行该方法下使用这一入口的所有 API 编码。
 
 ## 启动与使用
 
@@ -74,19 +117,19 @@ mvn spring-boot:run
 
 ```bash
 # 服务级路由：请求路径直接传递给目标服务
-curl -X POST http://localhost:8888/member/coupons -H "X-Server: member"
+curl -X POST http://localhost:8888/member/coupons -H "X-Server: member" -H "Authorization: Bearer <access_token>"
 
 # 外部 API 级路由：由 API 配置决定实际转发路径
-curl -X POST http://localhost:8888/openapi/execute -H "X-Api-Code: member.coupons" -H "X-Api-Version: v1"
+curl -X POST http://localhost:8888/openapi/execute -H "X-Api-Code: member.coupons" -H "Authorization: Bearer <access_token>"
 
 # 内部 API 级路由
-curl -X POST http://localhost:8888/internal/execute -H "X-Api-Code: member.coupons" -H "X-Api-Version: v1"
+curl -X POST http://localhost:8888/internal/execute -H "X-Api-Code: member.coupons" -H "Authorization: Bearer <access_token>"
 ```
 
 ## 当前实现注意事项
 
 - 服务和 API 的缓存时间不同，后台配置变化不会保证立即在所有网关实例生效。服务列表请求失败时会沿用已有缓存，返回空列表也会沿用已有缓存。
 - Redis 未命中时 API 路由依赖 `mall-admin`；网关启动时若无法获取服务列表且没有本地缓存，动态路由可能不可用。
-- 仓库中有 `AuthFilter` 示例，但当前源码中未发现该类注册为 Spring Bean，因此不能据此认为认证已启用。正式使用前需要完善并验证认证、授权和配置接口的访问控制。
+- 网关通过 Keycloak JWT 验证请求，健康检查及配置的匿名路径不要求 Token，其他路径要求有效 Token。通过 `KEYCLOAK_ISSUER_URI` 和 `GATEWAY_SECURITY_AUDIENCE` 可覆盖默认 issuer 和受众；Token 的 issuer 必须完全匹配，网关需要访问 Keycloak 的发现文档和公钥。网关当前只检查身份，尚未按 API 编码检查权限。
 - 两个 API 入口目前使用相同的路由逻辑，路径名称本身不提供内外网隔离或鉴权。后台目前仅按 API 编码查询，版本头不参与 API 配置的选择。
 - 本地配置包含环境相关的内网地址和凭据，部署时应按环境调整并妥善管理敏感配置。
